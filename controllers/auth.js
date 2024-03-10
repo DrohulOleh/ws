@@ -34,15 +34,6 @@ module.exports.login = async function (req, res) {
   }
 };
 
-module.exports.login1 = function (req, res) {
-  res.status(200).json({
-    login: {
-      email: req.body.email,
-      password: req.body.password,
-    },
-  });
-};
-
 module.exports.registration = async function (req, res) {
   const candidate = await User.findOne({ email: req.body.email });
 
