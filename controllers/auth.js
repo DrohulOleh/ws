@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const keys = require("../config/keys");
 const errorHandler = require("../middleware/errorHandler");
-const passport = require("passport");
 
 module.exports.login = async function (req, res) {
   const candidate = await User.findOne({ email: req.body.email });
@@ -30,7 +29,9 @@ module.exports.login = async function (req, res) {
       res.status(401).json({ message: "Incorrect password, try again" });
     }
   } else {
-    res.status(404).json({ message: "User with this email was not found" });
+    res
+      .status(404)
+      .json({ message: `User with email '${req.body.email}' was not found` });
   }
 };
 
@@ -38,7 +39,9 @@ module.exports.registration = async function (req, res) {
   const candidate = await User.findOne({ email: req.body.email });
 
   if (candidate) {
-    res.status(409).json({ message: "This email has already been registered" });
+    res.status(409).json({
+      message: `Email '${req.body.email}' has already been registered`,
+    });
   } else {
     const salt = bcrypt.genSaltSync(10);
     const password = req.body.password;

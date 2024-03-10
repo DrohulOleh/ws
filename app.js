@@ -5,6 +5,9 @@ const passport = require("passport");
 const keys = require("./config/keys");
 
 const authRoutes = require("./routes/auth");
+const overviewRoutes = require("./routes/overview");
+const categoryRoutes = require("./routes/category");
+const productRoutes = require("./routes/product");
 
 const app = express();
 
@@ -23,5 +26,8 @@ app.use(bodyParser.json());
 app.use(require("cors")());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/overview", overviewRoutes);
+app.use("/api/category", categoryRoutes);
+app.use("/api/product", productRoutes);
 
 module.exports = app;
