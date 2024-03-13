@@ -18,7 +18,7 @@ mongoose
   .catch((error) => console.log(error));
 
 app.use(passport.initialize());
-require("./middleware/passport")(passport);
+require("./helpers/passport")(passport);
 
 app.use(require("morgan")("dev"));
 app.use("/uploads", express.static("uploads"));

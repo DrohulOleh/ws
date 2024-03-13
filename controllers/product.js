@@ -1,5 +1,5 @@
 const Product = require("../models/Product");
-const errorHandler = require("../middleware/errorHandler");
+const errorHandler = require("../helpers/errorHandler");
 
 module.exports.getAll = async function (req, res) {
   try {

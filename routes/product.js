@@ -1,6 +1,6 @@
 const express = require("express");
 const passport = require("passport");
-const upload = require("../middleware/upload");
+const upload = require("../helpers/upload");
 const controller = require("../controllers/product");
 const router = express.Router();
 
