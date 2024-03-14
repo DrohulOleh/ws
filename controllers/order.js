@@ -1,8 +1,17 @@
 const Order = require("../models/Order");
 const errorHandler = require("../helpers/errorHandler");
+const roles = require("../helpers/roles");
 
 module.exports.getAll = async function (req, res) {
   try {
+    const currentUser = req.user;
+
+    if (currentUser.role !== roles.admin) {
+      const orders = await Order.find({ user: req.user.id }).sort({ date: -1 });
+
+      res.status(200).json(orders);
+    }
+
     const orders = await Order.find({}).sort({ date: -1 });
 
     res.status(200).json(orders);

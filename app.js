@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const keys = require("./config/keys");
 
-const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 const overviewRoutes = require("./routes/overview");
 const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(require("cors")());
 
-app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/overview", overviewRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);

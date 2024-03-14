@@ -19,6 +19,7 @@ module.exports.login = async function (req, res) {
           email: candidate.email,
           userId: candidate._id,
           role: candidate.role,
+          isRegistrationComplete: candidate.isRegistrationComplete,
         },
         keys.jwtKEY,
         { expiresIn: 3600 }
@@ -56,5 +57,19 @@ module.exports.registration = async function (req, res) {
     } catch (err) {
       errorHandler(res, err);
     }
+  }
+};
+
+module.exports.update = async function (req, res) {
+  try {
+  } catch (err) {
+    errorHandler(res, err);
+  }
+};
+
+module.exports.delete = async function (req, res) {
+  try {
+  } catch (err) {
+    errorHandler(res, err);
   }
 };
