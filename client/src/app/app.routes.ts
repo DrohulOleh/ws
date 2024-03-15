@@ -7,7 +7,7 @@ import { RegistrationPageComponent } from './pages/registration-page/registratio
 export const routes: Routes = [
   {
     path: '',
-    component: AuthLayoutComponent,
+    component: AuthLayoutComponent, 
     children: [
       { path: '', redirectTo: '/login', pathMatch: 'full' },
       { path: 'login', component: LoginPageComponent },
