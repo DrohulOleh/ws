@@ -16,6 +16,8 @@ import {
 } from 'dfx-bootstrap-icons';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../shared/services/auth.service';
+import { jwtDecode } from 'jwt-decode';
+import { EUserRoles, IUser } from '../../shared/types';
 
 @Component({
   selector: 'app-login-page',
@@ -61,7 +63,18 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     this.aSub = this.auth.login(this.form.value).subscribe({
       next: () => {
-        this.router.navigate(['/overview']);
+        let currentUserToken: string | null = this.auth.getToken();
+        if (currentUserToken) {
+          const currentUserRole = jwtDecode<IUser>(currentUserToken).role;
+          console.log(currentUserRole);
+
+          if (currentUserRole !== EUserRoles.admin) {
+            this.router.navigate(['/products']);
+          } else {
+            this.router.navigate(['/overview']);
+          }
+        }
+        //this.router.navigate(['/overview']);
       },
       error: (err) => {
         console.warn(err.error.message);

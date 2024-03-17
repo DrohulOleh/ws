@@ -3,6 +3,10 @@ export enum EUserRoles {
   user = 'ROLE_USER',
 }
 
+export interface GENERIC_KEY_VALUE_INTERFACE {
+  [key: string]: any;
+}
+
 export interface IMessage {
   message: string;
 }
@@ -10,4 +14,6 @@ export interface IMessage {
 export interface IUser {
   email: string;
   password: string;
+  role: string;
+  isRegistrationComplete: boolean;
 }

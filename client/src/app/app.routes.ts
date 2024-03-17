@@ -7,6 +7,7 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
 import { OverviewPageComponent } from './pages/overview-page/overview-page.component';
 import { ProductsPageComponent } from './pages/products-page/products-page.component';
+import { EUserRoles } from './shared/types';
 
 export const routes: Routes = [
   {
@@ -23,7 +24,11 @@ export const routes: Routes = [
     component: SiteLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: 'overview', component: OverviewPageComponent },
+      {
+        path: 'overview',
+        component: OverviewPageComponent,
+        data: { role: [EUserRoles.admin] },
+      },
       { path: 'products', component: ProductsPageComponent },
     ],
   },
