@@ -1,28 +1,87 @@
 <div class="row justify-content-center">
   <div class="col-md-6">
     <div class="card mb-4 mx-4">
-      <form class="card-body p-4">
+      <form class="card-body p-4" [formGroup]="form" (ngSubmit)="onSubmit()">
         <h1>Login</h1>
         <p class="text-medium-emphasis">Sign In to your account</p>
         <div class="mb-3">
           <div class="input-group">
             <span class="input-group-text"><bi name="at" /></span>
-            <input class="form-control" type="email" placeholder="Email" />
+            <input
+              formControlName="email"
+              id="email"
+              class="form-control"
+              type="email"
+              placeholder="Email"
+              [ngClass]="{
+                invalid: form.get('email').invalid && form.get('email').touched
+              }"
+            />
+          </div>
+          <div
+            class="small text-end text-danger"
+            *ngIf="form.get('email').invalid && form.get('email').touched"
+          >
+            <div *ngIf="form.get('email').errors['required']">
+              Fill in this field
+            </div>
+            <div *ngIf="form.get('email').errors['email']">
+              Enter a correct email
+            </div>
           </div>
         </div>
         <div class="mb-4">
           <div class="input-group">
             <span class="input-group-text"><bi name="lock" /></span>
             <input
+              formControlName="password"
+              id="password"
               class="form-control"
               type="password"
               placeholder="Password"
+              [ngClass]="{
+                invalid:
+                  form.get('password').invalid && form.get('password').touched
+              }"
             />
           </div>
+          <div
+            class="small text-end text-danger"
+            *ngIf="form.get('password').invalid && form.get('password').touched"
+          >
+            <div *ngIf="form.get('password').errors['required']">
+              Fill in this field
+            </div>
+            <div
+              *ngIf="
+                form.get('password').errors['minlength'] &&
+                form.get('password').errors['minlength']['requiredLength']
+              "
+            >
+              Password must be at least
+              {{ form.get("password").errors["minlength"]["requiredLength"] }}
+              characters long
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="text-end small">
+            Don't have an account?&nbsp;<a
+              tabindex="-1"
+              routerLink="/registration"
+              >Register</a
+            >
+          </p>
         </div>
         <div class="row">
           <div class="col-6">
-            <button class="btn btn-primary px-4" type="button">Login</button>
+            <button
+              class="btn btn-primary px-4"
+              type="submit"
+              [disabled]="form.invalid || form.disabled"
+            >
+              Login
+            </button>
           </div>
           <div class="col-6 text-end">
             <button class="btn btn-link px-0" type="button">
