@@ -4,7 +4,7 @@ import { SiteLayoutComponent } from './shared/layouts/site-layout/site-layout.co
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
 
-export const routes: Routes = [
+export const routes: Routes = [ 
   {
     path: '',
     component: AuthLayoutComponent,
