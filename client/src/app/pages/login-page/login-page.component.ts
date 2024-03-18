@@ -64,6 +64,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.aSub = this.auth.login(this.form.value).subscribe({
       next: () => {
         let currentUserToken: string | null = this.auth.getToken();
+        
         if (currentUserToken) {
           const currentUserRole = jwtDecode<IUser>(currentUserToken).role;
           console.log(currentUserRole);
@@ -74,7 +75,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             this.router.navigate(['/overview']);
           }
         }
-        //this.router.navigate(['/overview']);
       },
       error: (err) => {
         console.warn(err.error.message);
