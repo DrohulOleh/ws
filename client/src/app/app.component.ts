@@ -3,6 +3,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
+import { IconSetService } from '@coreui/icons-angular';
+import { iconSubset } from './icons/icon-subset';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +14,16 @@ import { AuthService } from './shared/services/auth.service';
   template: '<router-outlet></router-outlet>',
 })
 export class AppComponent implements OnInit {
+  title = 'Whoolesale';
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private auth: AuthService
-  ) {}
+    private auth: AuthService,
+    private titleService: Title,
+    private iconSetService: IconSetService
+  ) {
+    titleService.setTitle(this.title);
+    iconSetService.icons = { ...iconSubset };
+  }
 
   ngOnInit(): void {
     const localStorage = this.document.defaultView?.localStorage;
@@ -22,7 +31,7 @@ export class AppComponent implements OnInit {
     if (localStorage) {
       const potentialToken = localStorage.getItem('auth-token');
 
-      if(potentialToken) {
+      if (potentialToken) {
         this.auth.setToken(potentialToken);
       }
     }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
   BadgeComponent,
+  ContainerComponent,
   SidebarBrandComponent,
   SidebarComponent,
   SidebarFooterComponent,
@@ -25,9 +26,10 @@ import {
     SidebarComponent,
     SidebarHeaderComponent,
     SidebarBrandComponent,
-    SidebarFooterComponent,
+    
     SidebarNavComponent,
     BadgeComponent,
+    ContainerComponent,
   ],
   providers: [provideBi(withIcons({ personCircle, arrowRightSquare }))],
   templateUrl: './site-layout.component.html',
@@ -35,10 +37,17 @@ import {
 })
 export class SiteLayoutComponent {
   navItems = [
-    { url: '/overview', name: 'Overview' },
-    { url: '/products', name: 'Products' },
-    { url: '/order', name: 'Orders' },
-    { url: '/user', name: 'Users' },
+    {
+      url: '/overview',
+      name: 'Overview',
+      iconComponent: { name: 'cil-chart' },
+    },
+    {
+      url: '/products',
+      name: 'Products',
+      iconComponent: { name: 'cil-fastfood' },
+    },
+    { url: '/order', name: 'Orders', iconComponent: { name: 'cil-notes' } },
+    { url: '/user', name: 'Users', iconComponent: { name: 'cil-user' } },
   ];
-  navItemOverview = [{ url: '/overview', name: 'Overview' }];
 }
