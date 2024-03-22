@@ -1,0 +1,160 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col lg="7" md="9" xl="6">
+        <c-card class="mx-4">
+          <c-card-body class="p-4">
+            <form cForm [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+              <h1>Register</h1>
+              <p class="text-medium-emphasis">Create your account</p>
+              <div>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText><svg cIcon name="cilAt"></svg> </span>
+                  <input
+                    [valid]="
+                      form.get('email').touched && form.get('email').valid
+                        ? true
+                        : form.get('email').touched && form.get('email').invalid
+                        ? false
+                        : undefined
+                    "
+                    autoComplete="off"
+                    cFormControl
+                    placeholder="Email"
+                    formControlName="email"
+                    id="email"
+                    type="email"
+                  /><c-form-feedback
+                    class="text-end"
+                    *ngIf="form.get('email').invalid"
+                    [valid]="!form.get('email').invalid"
+                  >
+                    <ng-container
+                      *ngIf="
+                        form.get('email').touched && form.get('email').invalid
+                      "
+                    >
+                      <div *ngIf="form.get('email').errors['required']">
+                        Email is required
+                      </div>
+                      <div *ngIf="form.get('email').errors['email']">
+                        Enter a correct email
+                      </div>
+                    </ng-container>
+                  </c-form-feedback>
+                </c-input-group>
+              </div>
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilLockLocked"></svg>
+                </span>
+                <input
+                  [valid]="
+                    form.get('password').touched && form.get('password').valid
+                      ? true
+                      : form.get('password').touched &&
+                        form.get('password').invalid
+                      ? false
+                      : undefined
+                  "
+                  autoComplete="off"
+                  cFormControl
+                  placeholder="Password"
+                  formControlName="password"
+                  id="password"
+                  type="password"
+                /><c-form-feedback
+                  class="text-end"
+                  *ngIf="form.get('password').invalid"
+                  [valid]="!form.get('password').invalid"
+                >
+                  <ng-container
+                    *ngIf="
+                      form.get('password').touched &&
+                      form.get('password').invalid
+                    "
+                  >
+                    <div *ngIf="form.get('password').errors['required']">
+                      Password is required
+                    </div>
+                    <div
+                      *ngIf="
+                        form.get('password').errors['minlength'] &&
+                        form.get('password').errors['minlength'][
+                          'requiredLength'
+                        ]
+                      "
+                    >
+                      Password must be at least
+                      {{
+                        form.get("password").errors["minlength"][
+                          "requiredLength"
+                        ]
+                      }}
+                      characters long
+                    </div>
+                  </ng-container>
+                </c-form-feedback>
+              </c-input-group>
+              <c-input-group class="mb-4">
+                <span cInputGroupText>
+                  <svg cIcon name="cilLockLocked"></svg>
+                </span>
+                <input
+                  [valid]="
+                    form.get('confirmPassword').touched &&
+                    form.get('confirmPassword').valid
+                      ? true
+                      : form.get('confirmPassword').touched &&
+                        form.get('confirmPassword').invalid
+                      ? false
+                      : undefined
+                  "
+                  autoComplete="off"
+                  cFormControl
+                  formControlName="confirmPassword"
+                  id="confirmPassword"
+                  placeholder="Confirm password"
+                  type="password"
+                /><c-form-feedback
+                  class="text-end"
+                  *ngIf="form.get('confirmPassword').invalid"
+                  [valid]="!form.get('confirmPassword').invalid"
+                >
+                  <ng-container
+                    *ngIf="
+                      form.get('confirmPassword').touched &&
+                      form.get('confirmPassword').invalid
+                    "
+                  >
+                    <div *ngIf="form?.errors?.['passwordMismatch']">
+                      {{ formErrors["confirmPassword"].passwordMismatch }}
+                    </div>
+                    <div *ngIf="form.get('confirmPassword').errors['required']">
+                      Password confirmation is required
+                    </div>
+                  </ng-container>
+                </c-form-feedback>
+              </c-input-group>
+              <div class="mb-4 text-end small">
+                Have an account?&nbsp;<a tabindex="-1" routerLink="/login"
+                  >Login</a
+                >
+              </div>
+              <div class="d-grid">
+                <button
+                  cButton
+                  type="submit"
+                  color="success"
+                  [disabled]="form.invalid || form.disabled"
+                >
+                  Create Account
+                </button>
+              </div>
+            </form>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

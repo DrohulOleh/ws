@@ -1,0 +1,169 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col lg="7" md="9" xl="6">
+        <!-- <c-card-group> -->
+        <c-card class="mx-4">
+          <c-card-body class="p-4">
+            <form cForm [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+              <h1>Login</h1>
+              <p class="text-medium-emphasis">Sign In to your account</p>
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilAt"></svg>
+                </span>
+                <input
+                  [valid]="
+                    form.get('email').touched && form.get('email').valid
+                      ? true
+                      : form.get('email').touched && form.get('email').invalid
+                      ? false
+                      : undefined
+                  "
+                  autoComplete="off"
+                  cFormControl
+                  formControlName="email"
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                /><c-form-feedback
+                  class="text-end"
+                  *ngIf="form.get('email').invalid"
+                  [valid]="!form.get('email').invalid"
+                >
+                  <ng-container
+                    *ngIf="
+                      form.get('email').touched && form.get('email').invalid
+                    "
+                  >
+                    <div *ngIf="form.get('email').errors['required']">
+                      Email is required
+                    </div>
+                    <div *ngIf="form.get('email').errors['email']">
+                      Enter a correct email
+                    </div>
+                  </ng-container>
+                </c-form-feedback>
+              </c-input-group>
+              <c-input-group class="mb-4">
+                <span cInputGroupText>
+                  <svg cIcon name="cilLockLocked"></svg>
+                </span>
+                <input
+                  [valid]="
+                    form.get('password').touched && form.get('password').valid
+                      ? true
+                      : form.get('password').touched &&
+                        form.get('password').invalid
+                      ? false
+                      : undefined
+                  "
+                  autoComplete="off"
+                  cFormControl
+                  formControlName="password"
+                  id="password"
+                  placeholder="Password"
+                  type="password"
+                /><c-form-feedback
+                  class="text-end"
+                  *ngIf="form.get('password').invalid"
+                  [valid]="!form.get('password').invalid"
+                >
+                  <ng-container
+                    *ngIf="
+                      form.get('password').touched &&
+                      form.get('password').invalid
+                    "
+                  >
+                    <div *ngIf="form.get('password').errors['required']">
+                      Password is required
+                    </div>
+                    <div
+                      *ngIf="
+                        form.get('password').errors['minlength'] &&
+                        form.get('password').errors['minlength'][
+                          'requiredLength'
+                        ]
+                      "
+                    >
+                      Password must be at least
+                      {{
+                        form.get("password").errors["minlength"][
+                          "requiredLength"
+                        ]
+                      }}
+                      characters long
+                    </div>
+                  </ng-container>
+                </c-form-feedback>
+              </c-input-group>
+              <div class="mb-4 text-end small">
+                Don't have an account?&nbsp;<a
+                  tabindex="-1"
+                  routerLink="/registration"
+                  >Register</a
+                >
+              </div>
+              <div class="d-grid mb-2">
+                <button
+                  cButton
+                  type="submit"
+                  color="primary"
+                  [disabled]="form.invalid || form.disabled"
+                >
+                  Login
+                </button>
+              </div>
+              <div class="text-end small">
+                <a tabindex="-1" routerLink="/registration">Forgot password?</a>
+              </div>
+              <!-- <c-row>
+                <c-col xs="6">
+                  <button cButton class="px-4" color="primary">Login</button>
+                </c-col>
+                <c-col class="text-right" xs="6">
+                  <button cButton class="px-0" color="link">
+                    Forgot password?
+                  </button>
+                </c-col>
+              </c-row> -->
+            </form>
+          </c-card-body>
+        </c-card>
+        <!-- <c-card
+            [ngStyle]="{ 'width.%': 44 }"
+            class="text-white bg-primary py-5"
+          >
+            <c-card-body class="text-center">
+              <div>
+                <h2>Sign up</h2>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <button
+                  [active]="true"
+                  cButton
+                  class="mt-3"
+                  color="primary"
+                  routerLink="/register"
+                >
+                  Register Now!
+                </button>
+              </div>
+            </c-card-body>
+          </c-card> -->
+        <!-- </c-card-group> -->
+      </c-col>
+    </c-row>
+  </c-container>
+</div>
+
+<c-toaster class="p-3" position="fixed">
+  <c-toast [visible]="true" color="danger" [delay]="20000">
+    <!-- <c-toast-header></c-toast-header> -->
+    <c-toast-body>
+      <p>there will be informational messages here</p>
+    </c-toast-body>
+  </c-toast>
+</c-toaster>

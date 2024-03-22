@@ -1,13 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
+import { IconSetService } from '@coreui/icons-angular';
+import { iconSubset } from './shared/classes/icon-subset';
+import { HttpClientModule } from '@angular/common/http';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  imports: [RouterOutlet, HttpClientModule],
+  template: '<router-outlet></router-outlet>',
 })
-export class AppComponent {
-  title = 'client';
+export class AppComponent implements OnInit {
+  title = 'WS Client';
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private titleService: Title,
+    private iconsetService: IconSetService
+  ) {
+    titleService.setTitle(this.title);
+    iconsetService.icons = { ...iconSubset };
+  }
+
+  ngOnInit(): void {
+    const localStorage = this.document.defaultView?.localStorage;
+
+    if (localStorage) {
+      const potentialToken = localStorage.getItem('auth-token');
+
+      if (potentialToken !== null) {
+      }
+    }
+  }
 }
