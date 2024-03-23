@@ -5,6 +5,7 @@ import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './shared/classes/icon-subset';
 import { HttpClientModule } from '@angular/common/http';
 import { DOCUMENT } from '@angular/common';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
+    private auth: AuthService,
     private titleService: Title,
     private iconsetService: IconSetService
   ) {
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit {
       const potentialToken = localStorage.getItem('auth-token');
 
       if (potentialToken !== null) {
+        this.auth.setToken(potentialToken);
       }
     }
   }

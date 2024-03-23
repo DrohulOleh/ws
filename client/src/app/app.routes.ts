@@ -7,6 +7,7 @@ import { RegistrationPageComponent } from './pages/registration-page/registratio
 import { OverviewPageComponent } from './pages/overview-page/overview-page.component';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
 import { OrderPageComponent } from './pages/order-page/order-page.component';
+import { canActivate, canActivateChild } from './shared/classes/auth.guard';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,7 @@ export const routes: Routes = [
   {
     path: '',
     component: SiteLayoutComponent,
+    canActivate: [canActivate, canActivateChild],
     children: [
       { path: 'overview', component: OverviewPageComponent },
       { path: 'product', component: ProductPageComponent },

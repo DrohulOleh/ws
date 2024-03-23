@@ -30,14 +30,15 @@ import { AuthService } from '../../shared/services/auth.service';
     ButtonModule,
     IconModule,
     ReactiveFormsModule,
-    RouterLink,ToastModule
+    RouterLink,
+    ToastModule,
   ],
   templateUrl: './login-page.component.html',
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
   form: FormGroup | any;
   aSub: Subscription | any;
-  
+  toastService: ToasterService | any;
 
   constructor(
     private auth: AuthService,
@@ -76,7 +77,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         console.warn(err.error.message);
-        
         this.form.enable();
       },
     });

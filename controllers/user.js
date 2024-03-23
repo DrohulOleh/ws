@@ -22,7 +22,7 @@ module.exports.login = async function (req, res) {
           isRegistrationComplete: candidate.isRegistrationComplete,
         },
         keys.jwtKEY,
-        { expiresIn: 3600 }
+        { expiresIn: 3660 }
       );
 
       res.status(200).json({ token: `Bearer ${token}` });
