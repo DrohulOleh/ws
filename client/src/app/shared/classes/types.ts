@@ -3,6 +3,10 @@ export enum EUserRoles {
   user = 'ROLE_USER',
 }
 
+export interface IMessage {
+  message: string;
+}
+
 export interface IUser {
   email: string;
   password: string;

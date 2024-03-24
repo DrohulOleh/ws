@@ -12,10 +12,16 @@ const orderRoutes = require("./routes/order");
 
 const app = express();
 
+
+
 mongoose
   .connect(keys.mongoURI)
   .then(() => console.log(`MongoDB \x1b[32;1mconnected\x1b[m`))
-  .catch((error) => console.log(error));
+  .catch((error) =>
+    console.log(
+      `MongoDB \x1b[31;1mconnection error\x1b[m. Error: ${error.message}`
+    )
+  );
 
 app.use(passport.initialize());
 require("./helpers/passport")(passport);
