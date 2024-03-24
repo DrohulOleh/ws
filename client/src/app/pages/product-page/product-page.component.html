@@ -1,10 +1,10 @@
 <div *ngIf="categories$ | async as categories; else loader">
   <div *ngIf="categories.length !== 0">
-    <c-row [gutter]="4" class="mb-3" [md]="4" [xs]="1">
-      <c-card *ngFor="let category of categories">
+    <c-row [gutter]="4" class="mb-3" [lg]="5" [md]="4" [xs]="1">
+      <c-card *ngFor="let category of categories" class="mx-1">
         <img cCardImg="top" [src]="category.imageSrc" />
         <c-card-body>
-          <h3 cCardTitle>{{ category.name }}</h3>
+          <h2 cCardTitle>{{ category.name }}</h2>
         </c-card-body>
       </c-card></c-row
     >
@@ -12,7 +12,7 @@
 </div>
 
 <ng-template #loader
-  ><div style="text-align: center; padding-top: calc(100vh / 2); height: 100vh">
+  ><div class="myspinner">
     <c-spinner></c-spinner></div
 ></ng-template>
 

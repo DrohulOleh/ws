@@ -1,2 +1,29 @@
 // Here you can add other styles
 
+// Backdrop background
+
+/* .sidebar:hover {
+  // scss-docs-start sidebar-backdrop-css-vars
+  --#{$prefix}backdrop-zindex: #{$zindex-sidebar-backdrop};
+  --#{$prefix}backdrop-bg: #{$sidebar-backdrop-bg};
+  --#{$prefix}backdrop-opacity: #{$sidebar-backdrop-opacity};
+  // scss-docs-end sidebar-backdrop-css-vars
+
+  @include overlay-backdrop(
+    var(--#{$prefix}backdrop-zindex),
+    var(--#{$prefix}backdrop-bg),
+    var(--#{$prefix}backdrop-opacity)
+  );
+
+  &:not(:hover) {
+    @extend %sidebar-narrow;
+  }
+} */
+
+.myspinner {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
