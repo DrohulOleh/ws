@@ -33,6 +33,8 @@ export class ProductPageComponent implements OnInit {
   products: IProduct[] = [];
   selectedCategoryId = '';
 
+  loading = false;
+
   showMainContent = true;
   showCategoriesToggle = true;
 
@@ -46,14 +48,14 @@ export class ProductPageComponent implements OnInit {
     this.showMainContent = !this.showMainContent;
     this.showCategoriesToggle = !this.showCategoriesToggle;
 
+    this.loading = true;
     this.selectedCategoryId = categoryId;
 
     this.productService.fetchProductsByCategoryId(categoryId).subscribe({
       next: (products) => {
         this.products = products;
+        this.loading = false;
       },
     });
   }
-
-  
 }

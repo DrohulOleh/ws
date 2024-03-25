@@ -38,7 +38,7 @@
   ></ng-container>
 </ng-container>
 
-<ng-template #showProductsByCategory let-categoryId="categoryId">
+<ng-template #showProductsByCategory let-categoryId="categoryId"><div *ngIf="!loading;else loader">
   <ng-container *ngIf="products.length !== 0">
     <a
       href="javascript:void(0);"
@@ -97,10 +97,10 @@
       >Back to categories</a
     >
     <p>No products available for this category.</p>
-  </ng-container>
+  </ng-container></div>
 </ng-template>
 
-<ng-template #showProducts>
+<ng-template #showProducts><div *ngIf="!loading;else loader">
   <ng-container *ngIf="products.length !== 0">
     <a
       href="javascript:void(0);"
@@ -159,7 +159,7 @@
       >Back to categories</a
     >
     <p>No products available for this category.</p>
-  </ng-container>
+  </ng-container></div>
 </ng-template>
 
 <ng-template #loader>
