@@ -57,6 +57,7 @@ export class ProductPageComponent implements OnInit {
       next: (productsInCategories) => {
         this.products = productsInCategories;
         this.loading = false;
+        console.log(productsInCategories);
       },
     });
   }
@@ -73,5 +74,14 @@ export class ProductPageComponent implements OnInit {
         console.log(products);
       },
     });
+  }
+
+  showProductsInCategoriesToggler() {
+    this.showMainContent = !this.showMainContent;
+    this.showCategoriesToggle = !this.showCategoriesToggle;
+    this.showProducts = !this.showProducts;
+    console.log('showMainContent', this.showMainContent);
+    console.log('showProducts', this.showProducts);
+    console.log('showCategoriesToggle', this.showCategoriesToggle);
   }
 }
