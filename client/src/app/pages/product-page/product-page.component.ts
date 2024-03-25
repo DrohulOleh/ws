@@ -32,9 +32,9 @@ export class ProductPageComponent implements OnInit {
   categories$!: Observable<ICategory[]>;
   products: IProduct[] = [];
   selectedCategoryId = '';
-  
 
   showMainContent = true;
+  showCategoriesToggle = true;
 
   constructor(private productService: ProductService) {}
 
@@ -44,13 +44,16 @@ export class ProductPageComponent implements OnInit {
 
   showProductByCategory(categoryId: string) {
     this.showMainContent = !this.showMainContent;
+    this.showCategoriesToggle = !this.showCategoriesToggle;
 
     this.selectedCategoryId = categoryId;
 
-    this.productService.fetchProductByCategoryId(categoryId).subscribe({
+    this.productService.fetchProductsByCategoryId(categoryId).subscribe({
       next: (products) => {
         this.products = products;
       },
     });
   }
+
+  
 }

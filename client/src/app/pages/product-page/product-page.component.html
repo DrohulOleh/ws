@@ -1,4 +1,4 @@
-<div class="mb-4">
+<div *ngIf="showCategoriesToggle" class="mb-4">
   <c-form-check
     inline="true"
     [switch]="true"
@@ -29,26 +29,85 @@
   </div>
 </div>
 
-<ng-container *ngIf="!showMainContent">
+<ng-container *ngIf="!showMainContent && !showCategoriesToggle">
   <ng-container
     *ngTemplateOutlet="
-      productByCategory;
+      showProductsByCategory;
       context: { categoryId: selectedCategoryId }
     "
   ></ng-container>
 </ng-container>
 
-<ng-template #loader>
-  <div class="myspinner">
-    <c-spinner></c-spinner>
-  </div>
-</ng-template>
-
-<ng-template #productByCategory let-categoryId="categoryId">
+<ng-template #showProductsByCategory let-categoryId="categoryId">
   <ng-container *ngIf="products.length !== 0">
     <a
       href="javascript:void(0);"
-      (click)="showMainContent = !showMainContent"
+      (click)="
+        (showMainContent = !showMainContent) &&
+          (showCategoriesToggle = !showCategoriesToggle)
+      "
+      class="mb-3"
+      >Back to categories</a
+    >
+
+    <c-card class="mb-3 w-100" *ngFor="let product of products">
+      <c-row class="g-0">
+        <c-col [md]="2">
+          <img [cCardImg] [src]="product.imageSrc" [alt]="product.name" />
+        </c-col>
+        <c-card-body cCol [md]="8">
+          <h5 cCardTitle>{{ product.name }}</h5>
+          <p cCardText>
+            {{ product.description }}
+          </p>
+          <p cCardText *ngIf="product.unit">
+            <small class="text-medium-emphasis"
+              >Unit of measurement: <strong>{{ product.unit }}</strong></small
+            >
+          </p> </c-card-body
+        ><c-col
+          [md]="1"
+          class="align-items-center d-flex flex-column justify-content-center"
+          ><h6>{{ product.cost | currency : "EUR" }}</h6></c-col
+        ><c-col
+          [md]="1"
+          class="align-items-center d-flex flex-column justify-content-center"
+        >
+          <input
+            cformControl
+            type="number"
+            class="mb-1 w-75 text-center small"
+            min="1"
+            value="1"
+          />
+          <button cButton size="sm" color="secondary">
+            Add to cart
+          </button></c-col
+        >
+      </c-row>
+    </c-card>
+  </ng-container>
+  <ng-container *ngIf="!products || products.length === 0"
+    ><a
+      href="javascript:void(0);"
+      (click)="
+        (showMainContent = !showMainContent) &&
+          (showCategoriesToggle = !showCategoriesToggle)
+      "
+      >Back to categories</a
+    >
+    <p>No products available for this category.</p>
+  </ng-container>
+</ng-template>
+
+<ng-template #showProducts>
+  <ng-container *ngIf="products.length !== 0">
+    <a
+      href="javascript:void(0);"
+      (click)="
+        (showMainContent = !showMainContent) &&
+          (showCategoriesToggle = !showCategoriesToggle)
+      "
       class="mb-3"
       >Back to categories</a
     >
@@ -91,9 +150,20 @@
     </c-card>
   </ng-container>
   <ng-container *ngIf="!products || products.length === 0"
-    ><a href="javascript:void(0);" (click)="showMainContent = !showMainContent"
+    ><a
+      href="javascript:void(0);"
+      (click)="
+        (showMainContent = !showMainContent) &&
+          (showCategoriesToggle = !showCategoriesToggle)
+      "
       >Back to categories</a
     >
     <p>No products available for this category.</p>
   </ng-container>
+</ng-template>
+
+<ng-template #loader>
+  <div class="myspinner">
+    <c-spinner></c-spinner>
+  </div>
 </ng-template>

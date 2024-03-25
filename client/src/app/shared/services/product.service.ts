@@ -37,7 +37,7 @@ export class ProductService {
     return this.http.get<IProduct[]>('/api/product');
   }
 
-  fetchProductByCategoryId(categoryId: string): Observable<IProduct[]> {
+  fetchProductsByCategoryId(categoryId: string): Observable<IProduct[]> {
     return this.http.get<IProduct[]>(`/api/product/${categoryId}`);
   }
 
