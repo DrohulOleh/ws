@@ -1,10 +1,24 @@
+<div class="mb-4">
+  <c-form-check
+    inline="true"
+    [switch]="true"
+    class="align-items-center d-flex flex-row justify-content-end"
+  >
+    <input cFormCheckInput type="checkbox" checked />
+    <label class="ms-1" cFormCheckLabel>Show products in categories</label>
+  </c-form-check>
+</div>
+
 <div *ngIf="showMainContent">
   <div *ngIf="categories$ | async as categories; else loader">
     <div *ngIf="categories.length !== 0">
       <c-row [gutter]="4" class="mb-3" [lg]="5" [md]="4" [xs]="1">
-        <c-card *ngFor="let category of categories" class="mx-1"
-          ><a (click)="showMainContent = !showMainContent">
-            <img cCardImg="top" [src]="category.imageSrc" />
+        <c-card *ngFor="let category of categories" class="mx-1">
+          <a
+            *ngIf="category._id"
+            href="javascript:void(0);"
+            (click)="showProductByCategory(category._id)"
+            ><img cCardImg="top" [src]="category.imageSrc" />
             <c-card-body>
               <h2 cCardTitle>{{ category.name }}</h2>
             </c-card-body>
@@ -16,7 +30,12 @@
 </div>
 
 <ng-container *ngIf="!showMainContent">
-  <ng-container *ngTemplateOutlet="productByCategory"></ng-container>
+  <ng-container
+    *ngTemplateOutlet="
+      productByCategory;
+      context: { categoryId: selectedCategoryId }
+    "
+  ></ng-container>
 </ng-container>
 
 <ng-template #loader>
@@ -25,10 +44,56 @@
   </div>
 </ng-template>
 
-<ng-template #productByCategory>
-  <ng-container>
-    <a href="javascript:void(0);" (click)="showMainContent = !showMainContent"
-      >back</a
-    ><p>product-page works!</p>
+<ng-template #productByCategory let-categoryId="categoryId">
+  <ng-container *ngIf="products.length !== 0">
+    <a
+      href="javascript:void(0);"
+      (click)="showMainContent = !showMainContent"
+      class="mb-3"
+      >Back to categories</a
+    >
+
+    <c-card class="mb-3 w-100" *ngFor="let product of products">
+      <c-row class="g-0">
+        <c-col [md]="2">
+          <img [cCardImg] [src]="product.imageSrc" [alt]="product.name" />
+        </c-col>
+        <c-card-body cCol [md]="8">
+          <h5 cCardTitle>{{ product.name }}</h5>
+          <p cCardText>
+            {{ product.description }}
+          </p>
+          <p cCardText>
+            <small class="text-medium-emphasis"
+              >Unit of measurement: <strong>{{ product.unit }}</strong></small
+            >
+          </p> </c-card-body
+        ><c-col
+          [md]="1"
+          class="align-items-center d-flex flex-column justify-content-center"
+          ><h6>{{ product.cost | currency : "EUR" }}</h6></c-col
+        ><c-col
+          [md]="1"
+          class="align-items-center d-flex flex-column justify-content-center"
+        >
+          <input
+            cformControl
+            type="number"
+            class="mb-1 w-75 text-center small"
+            min="1"
+            value="1"
+          />
+          <button cButton size="sm" color="secondary">
+            Add to cart
+          </button></c-col
+        >
+      </c-row>
+    </c-card>
+  </ng-container>
+  <ng-container *ngIf="!products || products.length === 0"
+    ><a href="javascript:void(0);" (click)="showMainContent = !showMainContent"
+      >Back to categories</a
+    >
+    <p>No products available for this category.</p>
   </ng-container>
 </ng-template>

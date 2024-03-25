@@ -76,9 +76,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         this.router.navigate(['/overview']);
       },
       error: (err) => {
-        console.warn(err.error.message);
+        console.warn(err.message);
         this.form.enable();
       },
+      complete: this.form.enable(),
     });
   }
 

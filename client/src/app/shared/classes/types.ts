@@ -23,6 +23,9 @@ export interface IProduct {
   _id?: string;
   category: string;
   cost: number;
+  description?: string;
+  imageSrc?: string;
   name: string;
   quantity?: number;
+  unit?: string;
 }
