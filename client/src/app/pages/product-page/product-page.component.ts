@@ -32,11 +32,13 @@ export class ProductPageComponent implements OnInit {
   categories$!: Observable<ICategory[]>;
   products: IProduct[] = [];
   selectedCategoryId = '';
+  selectedCategoryName = '';
 
   loading = false;
 
   showMainContent = true;
   showCategoriesToggle = true;
+  showProducts = false;
 
   constructor(private productService: ProductService) {}
 
@@ -55,6 +57,19 @@ export class ProductPageComponent implements OnInit {
       next: (products) => {
         this.products = products;
         this.loading = false;
+      },
+    });
+  }
+
+  showAllProducts() {
+    this.showMainContent = !this.showMainContent;
+    this.showProducts = !this.showProducts;
+
+    this.productService.fetchProducts().subscribe({
+      next: (products) => {
+        this.products = products.sort((a, b) => (a.name > b.name ? 1 : -1));
+        this.loading = false;
+        console.log(products);
       },
     });
   }
