@@ -64,6 +64,7 @@ export class ProductPageComponent implements OnInit {
   showAllProducts() {
     this.showMainContent = !this.showMainContent;
     this.showProducts = !this.showProducts;
+    this.loading = true;
 
     this.productService.fetchProducts().subscribe({
       next: (products) => {
