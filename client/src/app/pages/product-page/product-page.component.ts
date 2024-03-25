@@ -31,8 +31,8 @@ import { RouterLink } from '@angular/router';
 export class ProductPageComponent implements OnInit {
   categories$!: Observable<ICategory[]>;
   products: IProduct[] = [];
+  productsInCategories: IProduct[] = [];
   selectedCategoryId = '';
-  selectedCategoryName = '';
 
   loading = false;
 
@@ -54,8 +54,8 @@ export class ProductPageComponent implements OnInit {
     this.selectedCategoryId = categoryId;
 
     this.productService.fetchProductsByCategoryId(categoryId).subscribe({
-      next: (products) => {
-        this.products = products;
+      next: (productsInCategories) => {
+        this.products = productsInCategories;
         this.loading = false;
       },
     });

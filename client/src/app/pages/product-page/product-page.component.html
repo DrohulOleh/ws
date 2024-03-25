@@ -46,7 +46,7 @@
   ></ng-container>
 </ng-container>
 
-<ng-container *ngIf="!showProducts"
+<ng-container *ngIf="showProducts"
   ><ng-container *ngTemplateOutlet="showProducts"></ng-container
 ></ng-container>
 
@@ -63,7 +63,7 @@
         >Back to categories</a
       >
 
-      <c-card class="mb-3 w-100" *ngFor="let product of products">
+      <c-card class="mb-3 w-100" *ngFor="let product of productsInCategories">
         <c-row class="g-0">
           <c-col [md]="2">
             <img [cCardImg] [src]="product.imageSrc" [alt]="product.name" />
@@ -117,16 +117,6 @@
 <ng-template #showProducts
   ><div *ngIf="!loading; else loader">
     <ng-container *ngIf="products.length !== 0">
-      <a
-        href="javascript:void(0);"
-        (click)="
-          (showMainContent = !showMainContent) &&
-            (showCategoriesToggle = !showCategoriesToggle)
-        "
-        class="mb-3"
-        >Back to categories</a
-      >
-
       <c-card class="mb-3 w-100" *ngFor="let product of products">
         <c-row class="g-0">
           <c-col [md]="2">
@@ -137,7 +127,7 @@
             <p cCardText>
               {{ product.description }}
             </p>
-            <p cCardText>
+            <p cCardText *ngIf="product.unit">
               <small class="text-medium-emphasis"
                 >Unit of measurement: <strong>{{ product.unit }}</strong></small
               >
@@ -164,16 +154,8 @@
         </c-row>
       </c-card>
     </ng-container>
-    <ng-container *ngIf="!products || products.length === 0"
-      ><a
-        href="javascript:void(0);"
-        (click)="
-          (showMainContent = !showMainContent) &&
-            (showCategoriesToggle = !showCategoriesToggle)
-        "
-        >Back to categories</a
-      >
-      <p>No products available for this category.</p>
+    <ng-container *ngIf="!products || products.length === 0">
+      <p>No products available.</p>
     </ng-container>
   </div>
 </ng-template>
