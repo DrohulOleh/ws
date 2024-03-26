@@ -12,8 +12,6 @@ const orderRoutes = require("./routes/order");
 
 const app = express();
 
-
-
 mongoose
   .connect(keys.mongoURI)
   .then(() => console.log(`MongoDB \x1b[32;1mconnected\x1b[m`))
