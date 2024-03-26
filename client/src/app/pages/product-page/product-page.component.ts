@@ -34,11 +34,12 @@ export class ProductPageComponent implements OnInit {
   productsInCategories: IProduct[] = [];
   selectedCategoryId = '';
 
-  loading = false;
+  fetchingProducts = false;
 
-  showMainContent = true;
-  showCategoriesToggle = true;
-  showProducts = false;
+  showCategoriesTEMPLATE = true;
+  showProductsInCategoriesSwitcherTEMPLATE = true;
+  showProductsAllTEMPLATE = false;
+  showProductsByCategoryTEMPLATE = false;
 
   constructor(private productService: ProductService) {}
 
@@ -47,40 +48,46 @@ export class ProductPageComponent implements OnInit {
   }
 
   showProductByCategory(categoryId: string) {
-    this.showMainContent = !this.showMainContent;
-    this.showCategoriesToggle = !this.showCategoriesToggle;
+    this.showCategoriesTEMPLATE = !this.showCategoriesTEMPLATE;
+    this.showProductsInCategoriesSwitcherTEMPLATE =
+      !this.showProductsInCategoriesSwitcherTEMPLATE;
+    this.showProductsByCategoryTEMPLATE = !this.showProductsByCategoryTEMPLATE;
 
-    this.loading = true;
+    this.fetchingProducts = true;
     this.selectedCategoryId = categoryId;
 
     this.productService.fetchProductsByCategoryId(categoryId).subscribe({
       next: (productsInCategories) => {
         this.productsInCategories = productsInCategories;
-        this.loading = false;
+        this.fetchingProducts = false;
         console.log(productsInCategories);
       },
     });
   }
 
   showAllProducts() {
-    this.showMainContent = !this.showMainContent;
-    this.showProducts = !this.showProducts;
-    this.loading = true;
+    this.showCategoriesTEMPLATE = !this.showCategoriesTEMPLATE;
+    this.showProductsAllTEMPLATE = !this.showProductsAllTEMPLATE;
+    
+    this.fetchingProducts = true;
 
     this.productService.fetchProducts().subscribe({
       next: (productsAll) => {
-        this.productsAll = productsAll.sort((a, b) => (a.name > b.name ? 1 : -1));
-        this.loading = false;
+        this.productsAll = productsAll.sort((a, b) =>
+          a.name > b.name ? 1 : -1
+        );
+        this.fetchingProducts = false;
       },
     });
   }
 
-  showProductsInCategoriesToggler() {
-    this.showMainContent = !this.showMainContent;
-    this.showCategoriesToggle = !this.showCategoriesToggle;
-    this.showProducts = !this.showProducts;
-    console.log('showMainContent', this.showMainContent);
-    console.log('showProducts', this.showProducts);
-    console.log('showCategoriesToggle', this.showCategoriesToggle);
-  }
+  /* showProductsInCategoriesToggler() {
+    this.showCategoriesTEMPLATE = !this.showCategoriesTEMPLATE;
+    this.showProductsInCategoriesSwitcher =
+      !this.showProductsInCategoriesSwitcher;
+    this.showProductsAll = !this.showProductsAll;
+    console.log('showMainContent', this.showCategoriesTEMPLATE);
+    console.log('showProducts', this.showProductsAll);
+    console.log('showCategoriesToggle', this.showProductsInCategoriesSwitcher);
+  } */
 }

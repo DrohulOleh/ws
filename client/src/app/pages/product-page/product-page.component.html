@@ -1,4 +1,4 @@
-<div *ngIf="showCategoriesToggle" class="mb-4">
+<div *ngIf="showProductsInCategoriesSwitcherTEMPLATE" class="mb-4">
   <c-form-check
     inline="true"
     [switch]="true"
@@ -15,10 +15,10 @@
   </c-form-check>
 </div>
 
-<div *ngIf="showMainContent">
+<div *ngIf="showCategoriesTEMPLATE">
   <div *ngIf="categories$ | async as categories; else loader">
     <div *ngIf="categories.length !== 0">
-      <c-row [gutter]="4" class="mb-3" [lg]="5" [md]="4" [xs]="1">
+      <c-row [gutter]="2" class="mb-2" [lg]="6" [md]="4" [xs]="1">
         <c-card *ngFor="let category of categories" class="mx-1">
           <div
             *ngIf="category._id"
@@ -37,25 +37,35 @@
   </div>
 </div>
 
-<ng-container *ngIf="!showMainContent && !showCategoriesToggle">
+<ng-container
+  *ngIf="
+    (!showCategoriesTEMPLATE && !showProductsInCategoriesSwitcherTEMPLATE) ||
+    (!showProductsAllTEMPLATE && showProductsByCategoryTEMPLATE)
+  "
+>
   <ng-container
     *ngTemplateOutlet="
-      showProductsByCategory;
+      ProductsByCategoryTEMPLATE;
       context: { categoryId: selectedCategoryId }
     "
   ></ng-container>
 </ng-container>
 
+<ng-container
+  *ngIf="!showCategoriesTEMPLATE && !showProductsByCategoryTEMPLATE"
+>
+  <ng-container *ngTemplateOutlet="ProductsAllTEMPLATE"></ng-container
+></ng-container>
 
-
-<ng-template #showProductsByCategory let-categoryId="categoryId"
-  ><div *ngIf="!loading; else loader">
+<ng-template #ProductsByCategoryTEMPLATE let-categoryId="categoryId"
+  ><div *ngIf="!fetchingProducts; else loader">
     <ng-container *ngIf="productsInCategories.length !== 0">
       <a
         href="javascript:void(0);"
         (click)="
-          (showMainContent = !showMainContent) &&
-            (showCategoriesToggle = !showCategoriesToggle)
+          (showCategoriesTEMPLATE = !showCategoriesTEMPLATE) &&
+            (showProductsInCategoriesSwitcherTEMPLATE =
+              !showProductsInCategoriesSwitcherTEMPLATE)
         "
         class="mb-3"
         >Back to categories</a
@@ -98,12 +108,14 @@
         </c-row>
       </c-card>
     </ng-container>
-    <ng-container *ngIf="!productsInCategories || productsInCategories.length === 0"
+    <ng-container
+      *ngIf="!productsInCategories || productsInCategories.length === 0"
       ><a
         href="javascript:void(0);"
         (click)="
-          (showMainContent = !showMainContent) &&
-            (showCategoriesToggle = !showCategoriesToggle)
+          (showCategoriesTEMPLATE = !showCategoriesTEMPLATE) &&
+            (showProductsInCategoriesSwitcherTEMPLATE =
+              !showProductsInCategoriesSwitcherTEMPLATE)
         "
         >Back to categories</a
       >
@@ -112,8 +124,8 @@
   </div>
 </ng-template>
 
-<ng-template #showProducts
-  ><div *ngIf="!loading; else loader">
+<ng-template #ProductsAllTEMPLATE
+  ><div *ngIf="!fetchingProducts; else loader">
     <ng-container *ngIf="productsAll.length !== 0">
       <c-card class="mb-3 w-100" *ngFor="let product of productsAll">
         <c-row class="g-0">
