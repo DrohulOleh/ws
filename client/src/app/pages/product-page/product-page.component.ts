@@ -30,7 +30,7 @@ import { RouterLink } from '@angular/router';
 })
 export class ProductPageComponent implements OnInit {
   categories$!: Observable<ICategory[]>;
-  products: IProduct[] = [];
+  productsAll: IProduct[] = [];
   productsInCategories: IProduct[] = [];
   selectedCategoryId = '';
 
@@ -55,7 +55,7 @@ export class ProductPageComponent implements OnInit {
 
     this.productService.fetchProductsByCategoryId(categoryId).subscribe({
       next: (productsInCategories) => {
-        this.products = productsInCategories;
+        this.productsInCategories = productsInCategories;
         this.loading = false;
         console.log(productsInCategories);
       },
@@ -68,10 +68,9 @@ export class ProductPageComponent implements OnInit {
     this.loading = true;
 
     this.productService.fetchProducts().subscribe({
-      next: (products) => {
-        this.products = products.sort((a, b) => (a.name > b.name ? 1 : -1));
+      next: (productsAll) => {
+        this.productsAll = productsAll.sort((a, b) => (a.name > b.name ? 1 : -1));
         this.loading = false;
-        console.log(products);
       },
     });
   }

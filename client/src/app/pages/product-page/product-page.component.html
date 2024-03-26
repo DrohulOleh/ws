@@ -46,13 +46,11 @@
   ></ng-container>
 </ng-container>
 
-<ng-container *ngIf="showProducts"
-  ><ng-container *ngTemplateOutlet="showProducts"></ng-container
-></ng-container>
+
 
 <ng-template #showProductsByCategory let-categoryId="categoryId"
   ><div *ngIf="!loading; else loader">
-    <ng-container *ngIf="products.length !== 0">
+    <ng-container *ngIf="productsInCategories.length !== 0">
       <a
         href="javascript:void(0);"
         (click)="
@@ -100,7 +98,7 @@
         </c-row>
       </c-card>
     </ng-container>
-    <ng-container *ngIf="!products || products.length === 0"
+    <ng-container *ngIf="!productsInCategories || productsInCategories.length === 0"
       ><a
         href="javascript:void(0);"
         (click)="
@@ -116,8 +114,8 @@
 
 <ng-template #showProducts
   ><div *ngIf="!loading; else loader">
-    <ng-container *ngIf="products.length !== 0">
-      <c-card class="mb-3 w-100" *ngFor="let product of products">
+    <ng-container *ngIf="productsAll.length !== 0">
+      <c-card class="mb-3 w-100" *ngFor="let product of productsAll">
         <c-row class="g-0">
           <c-col [md]="2">
             <img [cCardImg] [src]="product.imageSrc" [alt]="product.name" />
@@ -154,7 +152,7 @@
         </c-row>
       </c-card>
     </ng-container>
-    <ng-container *ngIf="!products || products.length === 0">
+    <ng-container *ngIf="!productsAll || productsAll.length === 0">
       <p>No products available.</p>
     </ng-container>
   </div>
