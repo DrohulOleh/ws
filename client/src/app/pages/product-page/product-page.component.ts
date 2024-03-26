@@ -47,11 +47,10 @@ export class ProductPageComponent implements OnInit {
     this.categories$ = this.productService.fetchCategories();
   }
 
-  showProductByCategory(categoryId: string) {
-    this.showCategoriesTEMPLATE = !this.showCategoriesTEMPLATE;
-    this.showProductsInCategoriesSwitcherTEMPLATE =
-      !this.showProductsInCategoriesSwitcherTEMPLATE;
-    this.showProductsByCategoryTEMPLATE = !this.showProductsByCategoryTEMPLATE;
+  showProductsByCategory(categoryId: string) {
+    this.showCategoriesTEMPLATE = false;
+    this.showProductsInCategoriesSwitcherTEMPLATE = false;
+    this.showProductsByCategoryTEMPLATE = true;
 
     this.fetchingProducts = true;
     this.selectedCategoryId = categoryId;
@@ -60,15 +59,14 @@ export class ProductPageComponent implements OnInit {
       next: (productsInCategories) => {
         this.productsInCategories = productsInCategories;
         this.fetchingProducts = false;
-        console.log(productsInCategories);
       },
     });
   }
 
-  showAllProducts() {
+  showProductsAll() {
     this.showCategoriesTEMPLATE = !this.showCategoriesTEMPLATE;
     this.showProductsAllTEMPLATE = !this.showProductsAllTEMPLATE;
-    
+
     this.fetchingProducts = true;
 
     this.productService.fetchProducts().subscribe({
@@ -81,13 +79,10 @@ export class ProductPageComponent implements OnInit {
     });
   }
 
-  /* showProductsInCategoriesToggler() {
-    this.showCategoriesTEMPLATE = !this.showCategoriesTEMPLATE;
-    this.showProductsInCategoriesSwitcher =
-      !this.showProductsInCategoriesSwitcher;
-    this.showProductsAll = !this.showProductsAll;
-    console.log('showMainContent', this.showCategoriesTEMPLATE);
-    console.log('showProducts', this.showProductsAll);
-    console.log('showCategoriesToggle', this.showProductsInCategoriesSwitcher);
-  } */
+  returnToCategories() {
+    this.showCategoriesTEMPLATE = true;
+    this.showProductsInCategoriesSwitcherTEMPLATE = true;
+    this.showProductsAllTEMPLATE = false;
+    this.showProductsByCategoryTEMPLATE = false;
+  }
 }
