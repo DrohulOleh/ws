@@ -23,7 +23,7 @@
           <div
             *ngIf="category._id"
             href="javascript:void(0);"
-            (click)="showProductsByCategory(category._id)"
+            (click)="showProductsByCategory(category._id, category.name)"
             style="cursor: pointer"
           >
             <img cCardImg="top" [src]="category.imageSrc" />
@@ -43,7 +43,10 @@
   <ng-container
     *ngTemplateOutlet="
       ProductsByCategoryTEMPLATE;
-      context: { categoryId: selectedCategoryId }
+      context: {
+        categoryId: selectedCategoryId,
+        categoryName: selectedCategoryName
+      }
     "
   ></ng-container>
 </ng-container>
@@ -55,15 +58,25 @@
 ></ng-container>
 
 <div>
-  <ng-template #ProductsByCategoryTEMPLATE let-categoryId="categoryId"
-    ><div *ngIf="!fetchingProducts; else loader">
-      <ng-container *ngIf="productsInCategories.length !== 0">
-        <a
-          href="javascript:void(0);"
+  <ng-template
+    #ProductsByCategoryTEMPLATE
+    let-categoryId="categoryId"
+    let-categoryName="categoryName"
+  >
+    <div *ngIf="!fetchingProducts; else loader">
+      <ng-container *ngIf="productsInCategories.length !== 0"
+        ><span
+          ><h3>{{ categoryName }}</h3></span
+        ><button
+          cButton
+          class="mb-3 d-flex align-items-center justify-content-center"
+          color="dark"
+          variant="ghost"
           (click)="returnToCategories()"
-          class="mb-3"
-          >Back to categories</a
         >
+          <svg cIcon name="cil-arrow-circle-left" size="lg" class="me-2"></svg>
+          Back to categories
+        </button>
 
         <c-card class="mb-3 w-100" *ngFor="let product of productsInCategories">
           <c-row class="g-0">
@@ -72,9 +85,18 @@
             </c-col>
             <c-card-body cCol [md]="8">
               <h5 cCardTitle>{{ product.name }}</h5>
-              <p cCardText>
+
+              <p
+                cCardText
+                #ellipsisText
+                class="text-truncate"
+                style="max-width: w-100"
+                [class.text-untruncate]="product.isDescriptionTrancated"
+                (click)="textTruncate(product)"
+              >
                 {{ product.description }}
               </p>
+
               <p cCardText *ngIf="product.unit">
                 <small class="text-medium-emphasis"
                   >Unit of measurement:
@@ -125,7 +147,14 @@
             </c-col>
             <c-card-body cCol [md]="8">
               <h5 cCardTitle>{{ product.name }}</h5>
-              <p cCardText>
+              <p
+                cCardText
+                #ellipsisText
+                class="text-truncate"
+                style="max-width: w-100"
+                [class.text-untruncate]="product.isDescriptionTrancated"
+                (click)="textTruncate(product)"
+              >
                 {{ product.description }}
               </p>
               <p cCardText *ngIf="product.unit">

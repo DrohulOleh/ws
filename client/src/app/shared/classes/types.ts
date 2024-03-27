@@ -28,4 +28,5 @@ export interface IProduct {
   name: string;
   quantity?: number;
   unit?: string;
+  isDescriptionTrancated: boolean;
 }

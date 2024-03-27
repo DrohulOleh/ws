@@ -27,7 +27,7 @@ import { Router } from '@angular/router';
   imports: [
     AvatarModule,
     BadgeModule,
-    BreadcrumbModule,
+   // BreadcrumbModule,
     ButtonGroupModule,
     ButtonModule,
     CommonModule,

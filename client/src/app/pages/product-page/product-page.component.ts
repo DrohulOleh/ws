@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ICategory, IProduct } from '../../shared/classes/types';
 import { ProductService } from '../../shared/services/product.service';
@@ -12,6 +12,7 @@ import {
 } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { IconModule } from '@coreui/icons-angular';
 
 @Component({
   selector: 'app-product-page',
@@ -24,15 +25,17 @@ import { RouterLink } from '@angular/router';
     GridModule,
     RouterLink,
     SpinnerModule,
-    FormModule,
+    FormModule,IconModule
   ],
   templateUrl: './product-page.component.html',
 })
 export class ProductPageComponent implements OnInit {
+  //@ViewChild('ellipsisText') ellipsisText!: ElementRef;
   categories$!: Observable<ICategory[]>;
   productsAll: IProduct[] = [];
   productsInCategories: IProduct[] = [];
   selectedCategoryId = '';
+  selectedCategoryName = '';
 
   fetchingProducts = false;
 
@@ -47,13 +50,14 @@ export class ProductPageComponent implements OnInit {
     this.categories$ = this.productService.fetchCategories();
   }
 
-  showProductsByCategory(categoryId: string) {
+  showProductsByCategory(categoryId: string, categoryName: string) {
     this.showCategoriesTEMPLATE = false;
     this.showProductsInCategoriesSwitcherTEMPLATE = false;
     this.showProductsByCategoryTEMPLATE = true;
 
     this.fetchingProducts = true;
     this.selectedCategoryId = categoryId;
+    this.selectedCategoryName = categoryName;
 
     this.productService.fetchProductsByCategoryId(categoryId).subscribe({
       next: (productsInCategories) => {
@@ -84,5 +88,9 @@ export class ProductPageComponent implements OnInit {
     this.showProductsInCategoriesSwitcherTEMPLATE = true;
     this.showProductsAllTEMPLATE = false;
     this.showProductsByCategoryTEMPLATE = false;
+  }
+
+  textTruncate(product: any) {
+    product.isDescriptionTrancated = !product.isDescriptionTrancated;
   }
 }
