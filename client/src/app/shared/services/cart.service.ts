@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { IProduct, IProductList } from '../classes/types';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
+  cartSubscription!: Subscription;
   public productList: IProductList[] = [];
   public price = '';
 
@@ -42,7 +44,7 @@ export class CartService {
     return this.productList;
   }
 
-  deleteFromCart(productListInCart: IProductList) {
+  deleteItemFromCart(productListInCart: IProductList) {
     const idx = this.productList.findIndex(
       (p) => p._id === productListInCart._id
     );

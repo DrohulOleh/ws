@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../../shared/services/cart.service';
 import { CardModule, GridModule } from '@coreui/angular';
 import { IProductList } from '../../shared/classes/types';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { OrderService } from '../../shared/services/order.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -11,12 +13,18 @@ import { Router } from '@angular/router';
   imports: [CardModule, GridModule, CommonModule],
   templateUrl: './cart-page.component.html',
 })
-export class CartPageComponent implements OnInit {
+export class CartPageComponent implements OnInit, OnDestroy {
   productInCart: IProductList[] = [];
   totalPrice = '';
   fetchingProducts = false;
 
-  constructor(private cartService: CartService, private router: Router) {}
+
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private orderService: OrderService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.fetchingProducts = true;
@@ -26,7 +34,14 @@ export class CartPageComponent implements OnInit {
     if (this.productInCart.length === 0) {
       this.router.navigate(['/product']);
     }
-    
+
     this.fetchingProducts = false;
+
+    const token=this.auth.getToken();
+    console.log(token);
+  }
+
+  ngOnDestroy(): void {
+    this.productInCart = [];
   }
 }

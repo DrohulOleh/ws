@@ -3,6 +3,14 @@ export enum EUserRoles {
   user = 'ROLE_USER',
 }
 
+export enum EOrserStatus {
+  canceled = 'CANCELED',
+  delivered = 'DELIVERED',
+  new = 'NEW',
+  processing = 'PROCESSING',
+  ready = 'READY',
+}
+
 export interface IMessage {
   message: string;
 }
@@ -32,6 +40,11 @@ export interface IProduct {
   isDescriptionTrancated: boolean;
 }
 
+export interface ICart {
+  user: string;
+  list: IProductList[];
+}
+
 export interface IOrder {
   _id?: string;
   date?: Date;
@@ -42,9 +55,10 @@ export interface IOrder {
 
 export interface IProductList {
   _id?: string;
-  categoryName: string|any;
+  categoryName: string | any;
   cost: number;
+  imageSrc?: string;
   name: string;
   quantity?: number | any;
-  unit?: string;imageSrc?: string;
+  unit?: string;
 }
