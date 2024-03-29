@@ -38,13 +38,24 @@
         </a>
       </c-nav-item> -->
       <c-nav-item>
-        <a routerLink="./" cNavLink
-          ><c-badge class="ms-2 float-end" color="danger"size="sm"></c-badge>
+        <a
+          cNavLink
+          routerLink="/cart"
+          [disabled]="cart.productList.length === 0"
+        >
+          <c-badge
+            *ngIf="cart.productList.length > 0"
+            class="ms-1 float-end"
+            color="danger"
+            shape="rounded-pill"
+            size="sm"
+            >{{ cart.productList.length }}</c-badge
+          >
           <svg cIcon name="cilCart" size="lg"></svg>
         </a>
       </c-nav-item>
     </c-header-nav>
-    
+
     <c-header-nav class="ms-3">
       <ng-container *ngTemplateOutlet="userDropdown"></ng-container>
     </c-header-nav>
@@ -111,7 +122,7 @@
         </a>
       </li> -->
       <li>
-        <a routerLink="./" cDropdownItem>
+        <a routerLink="/cart" cDropdownItem>
           <svg cIcon class="me-2" name="cilSettings"></svg>
           Settings
         </a>

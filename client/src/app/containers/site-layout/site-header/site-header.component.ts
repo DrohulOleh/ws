@@ -19,15 +19,17 @@ import {
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { AuthService } from '../../../shared/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { CartService } from '../../../shared/services/cart.service';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-site-header',
   standalone: true,
   imports: [
+    // BreadcrumbModule,
     AvatarModule,
     BadgeModule,
-   // BreadcrumbModule,
     ButtonGroupModule,
     ButtonModule,
     CommonModule,
@@ -38,6 +40,8 @@ import { Router } from '@angular/router';
     IconModule,
     ListGroupModule,
     NavModule,
+    ReactiveFormsModule,
+    RouterModule,
     SharedModule,
     SidebarModule,
   ],
@@ -49,6 +53,7 @@ export class SiteHeaderComponent extends HeaderComponent {
   constructor(
     private auth: AuthService,
     private router: Router,
+    public cart: CartService,
     private classToggler: ClassToggleService
   ) {
     super();

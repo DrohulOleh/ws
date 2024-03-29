@@ -112,13 +112,20 @@
               class="align-items-center d-flex flex-column justify-content-center"
             >
               <input
+                [(ngModel)]="product.quantity"
                 cformControl
                 type="number"
                 class="mb-1 w-75 text-center small"
                 min="1"
                 value="1"
               />
-              <button cButton size="sm" color="secondary">
+              <button
+                [disabled]="!product.quantity"
+                cButton
+                size="sm"
+                color="secondary"
+                (click)="addToCart(product)"
+              >
                 Add to cart
               </button></c-col
             >
@@ -147,6 +154,7 @@
             </c-col>
             <c-card-body cCol [md]="8">
               <h5 cCardTitle>{{ product.name }}</h5>
+              <strong>{{ product.categoryName }}</strong>
               <p
                 cCardText
                 #ellipsisText
@@ -173,12 +181,19 @@
             >
               <input
                 cformControl
+                [(ngModel)]="product.quantity"
                 type="number"
                 class="mb-1 w-75 text-center small"
                 min="1"
                 value="1"
               />
-              <button cButton size="sm" color="secondary">
+              <button
+                cButton
+                size="sm"
+                color="secondary"
+                (click)="addToCart(product)"
+                [disabled]="!product.quantity"
+              >
                 Add to cart
               </button></c-col
             >

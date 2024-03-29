@@ -22,6 +22,7 @@ export interface ICategory {
 export interface IProduct {
   _id?: string;
   category: string;
+  categoryName?: string;
   cost: number;
   description?: string;
   imageSrc?: string;
@@ -29,4 +30,21 @@ export interface IProduct {
   quantity?: number;
   unit?: string;
   isDescriptionTrancated: boolean;
+}
+
+export interface IOrder {
+  _id?: string;
+  date?: Date;
+  list?: IProductList[];
+  order?: number;
+  user?: string;
+}
+
+export interface IProductList {
+  _id?: string;
+  categoryName: string|any;
+  cost: number;
+  name: string;
+  quantity?: number | any;
+  unit?: string;imageSrc?: string;
 }

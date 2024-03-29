@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './shared/classes/icon-subset';
 import { HttpClientModule } from '@angular/common/http';
