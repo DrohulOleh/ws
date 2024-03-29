@@ -40,4 +40,14 @@ export class AuthService {
     this.setToken(null as unknown as string);
     localStorage.removeItem('auth-token');
   }
+
+  getUserPayload() {
+    const token = this.getToken();
+    if (token) {
+      const userPayload = atob(token.split('.')[1]);
+      return JSON.parse(userPayload);
+    } else {
+      return null;
+    }
+  }
 }

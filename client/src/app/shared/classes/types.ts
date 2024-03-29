@@ -17,7 +17,9 @@ export interface IMessage {
 
 export interface IUser {
   email: string;
+  isRegistrationComplete: boolean;
   password: string;
+  role: EUserRoles;
 }
 
 export interface ICategory {
