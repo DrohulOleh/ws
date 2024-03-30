@@ -2,12 +2,16 @@
   <c-card *ngFor="let product of productInCart" class="g-0 w-100 d-flex-col"
     ><c-row class="g-0"
       ><c-col [md]="1"><img [cCardImg] [src]="product.imageSrc" /></c-col>
-      <c-card-body cCol [md]="8">
+      <c-card-body cCol [md]="6">
         <h5 cCardTitle>{{ product.name }}</h5>
         <p cCardText>{{ product.categoryName }}</p>
-        <p cCardText>
-          <small class="text-medium-emphasis">{{ product.unit }}</small>
-        </p> </c-card-body
+        <p cCardText></p> </c-card-body
+      ><c-col
+        ><small *ngIf="product.unit" class="text-medium-emphasis">{{
+          product.unit
+        }}</small></c-col
+      ><c-col [md]="1">{{ product.quantity }}</c-col
+      ><c-col [md]="1">{{ product.cost | currency : "EUR" }}</c-col
       ><c-col [md]="2">{{
         product.quantity * product.cost | currency : "EUR"
       }}</c-col></c-row
