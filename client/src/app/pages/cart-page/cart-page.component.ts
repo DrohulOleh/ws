@@ -18,7 +18,6 @@ export class CartPageComponent implements OnInit, OnDestroy {
   totalPrice = '';
   fetchingProducts = false;
 
-
   constructor(
     private cartService: CartService,
     private router: Router,
@@ -36,9 +35,6 @@ export class CartPageComponent implements OnInit, OnDestroy {
     }
 
     this.fetchingProducts = false;
-
-    const token=this.auth.getToken();
-    console.log(token);
   }
 
   ngOnDestroy(): void {

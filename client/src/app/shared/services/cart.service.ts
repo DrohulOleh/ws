@@ -35,6 +35,7 @@ export class CartService {
       candidate.quantity += productListInCart.quantity;
     } else {
       this.productList.push(productListInCart);
+      //sessionStorage.setItem('cart', JSON.stringify(this.productList));
     }
 
     this.calculatePrice();

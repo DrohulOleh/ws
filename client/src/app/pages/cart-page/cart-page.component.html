@@ -1,17 +1,18 @@
 <ng-container *ngIf="productInCart.length !== 0">
-  <c-card-group class="mb-4 ">
-    <c-row class="g-0"
-      ><c-card *ngFor="let product of productInCart" class="mb-3 w-100 d-flex-row"
-        ><c-col [md]="4"><img [cCardImg] [src]="product.imageSrc" /></c-col>
-        <c-card-body cCol [md]="8">
-          <h5 cCardTitle>{{ product.name }}</h5>
-          <p cCardText>{{ product.categoryName }}</p>
-          <p cCardText>
-            <small class="text-medium-emphasis">{{ product.unit }}</small>
-          </p></c-card-body
-        ><c-col>{{ product.quantity * product.cost | currency : "EUR" }}</c-col>
-      </c-card></c-row
+  <c-card *ngFor="let product of productInCart" class="g-0 w-100 d-flex-col"
+    ><c-row class="g-0"
+      ><c-col [md]="1"><img [cCardImg] [src]="product.imageSrc" /></c-col>
+      <c-card-body cCol [md]="8">
+        <h5 cCardTitle>{{ product.name }}</h5>
+        <p cCardText>{{ product.categoryName }}</p>
+        <p cCardText>
+          <small class="text-medium-emphasis">{{ product.unit }}</small>
+        </p> </c-card-body
+      ><c-col [md]="2">{{
+        product.quantity * product.cost | currency : "EUR"
+      }}</c-col></c-row
     >
-  </c-card-group>
+  </c-card>
+
   <div *ngIf="totalPrice">{{ totalPrice | currency : "EUR" }}</div>
 </ng-container>
