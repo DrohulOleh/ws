@@ -14,6 +14,7 @@ import { AuthService } from '../../shared/services/auth.service';
   templateUrl: './cart-page.component.html',
 })
 export class CartPageComponent implements OnInit, OnDestroy {
+  currentUserId = this.auth.getUserPayload()?.userId;
   productInCart: IProductList[] = [];
   totalPrice = '';
   fetchingProducts = false;
@@ -35,6 +36,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     }
 
     this.fetchingProducts = false;
+    console.log(this.currentUserId);
   }
 
   ngOnDestroy(): void {
