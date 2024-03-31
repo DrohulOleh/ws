@@ -50,6 +50,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class SiteHeaderComponent extends HeaderComponent {
   @Input() sidebarId: string = 'sidebar';
   currentUserId = this.auth.getUserPayload()?.userId;
+  //productListInCart= this.cart.getProductList(this.currentUserId);
 
   constructor(
     private auth: AuthService,

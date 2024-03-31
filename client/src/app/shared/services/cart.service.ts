@@ -9,10 +9,13 @@ import { AuthService } from './auth.service';
 export class CartService {
   cartSubscription!: Subscription;
   public productList: Record<string, IProductList[]> = {};
-  public price = '';
+  public totalAmmount = '';
+  public totalQantity: number = 0;
 
   constructor(private auth: AuthService) {
     this.loadCartData();
+    this.calculatePrice(this.auth.getUserPayload()?.userId);
+    this.calculateQuantity(this.auth.getUserPayload()?.userId);
   }
 
   addToCart(product: IProduct, userId: string) {
@@ -46,6 +49,7 @@ export class CartService {
     // Save cart data to sessionStorage after each update
     this.saveCartData();
     this.calculatePrice(userId);
+    this.calculateQuantity(userId);
   }
 
   getProductList(userId: string): IProductList[] {
@@ -65,21 +69,31 @@ export class CartService {
 
     this.saveCartData();
     this.calculatePrice(userId);
+    this.calculateQuantity(userId);
   }
 
   clearCart(userId: string) {
     this.productList[userId] = [];
-    this.price = '';
+    this.totalAmmount = '';
+    this.totalQantity = 0;
 
     this.saveCartData();
   }
 
   private calculatePrice(userId: string) {
-    this.price = this.productList[userId]
+    if (!this.productList[userId]) return;
+    this.totalAmmount = this.productList[userId]
       .reduce((acc, product) => (acc += product.cost * product.quantity), 0)
       .toFixed(2);
   }
 
+  calculateQuantity(userId: string) {
+    if (!this.productList[userId]) return;
+    this.totalQantity = this.productList[userId].reduce(
+      (acc, product) => (acc += product.quantity),
+      0
+    );
+  }
   private saveCartData() {
     sessionStorage.setItem('cart', JSON.stringify(this.productList));
   }

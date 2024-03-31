@@ -29,14 +29,13 @@ export class CartPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fetchingProducts = true;
     this.productInCart = this.cartService.getProductList(this.currentUserId);
-    this.totalPrice = this.cartService.price;
+    this.totalPrice = this.cartService.totalAmmount;
 
     if (this.productInCart.length === 0) {
       this.router.navigate(['/product']);
     }
 
     this.fetchingProducts = false;
-    console.log(this.productInCart);
   }
 
   ngOnDestroy(): void {}
