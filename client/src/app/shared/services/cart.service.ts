@@ -11,14 +11,16 @@ export class CartService {
   public productList: Record<string, IProductList[]> = {};
   public price = '';
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService) {
+    this.loadCartData();
+  }
 
   addToCart(product: IProduct, userId: string) {
     const productListInCart: IProductList = Object.assign(
       {},
       {
         _id: product._id,
-        category: product.category,
+        //category: product.category,
         categoryName: product.categoryName,
         cost: product.cost,
         imageSrc: product.imageSrc,
@@ -40,9 +42,9 @@ export class CartService {
       candidate.quantity += productListInCart.quantity;
     } else {
       this.productList[userId].push(productListInCart);
-      //sessionStorage.setItem('cart', JSON.stringify(this.productList));
     }
-
+    // Save cart data to sessionStorage after each update
+    this.saveCartData();
     this.calculatePrice(userId);
   }
 
@@ -61,17 +63,29 @@ export class CartService {
       this.productList[userId].splice(idx, 1);
     }
 
+    this.saveCartData();
     this.calculatePrice(userId);
   }
 
   clearCart(userId: string) {
     this.productList[userId] = [];
     this.price = '';
+
+    this.saveCartData();
   }
 
   private calculatePrice(userId: string) {
     this.price = this.productList[userId]
       .reduce((acc, product) => (acc += product.cost * product.quantity), 0)
       .toFixed(2);
+  }
+
+  private saveCartData() {
+    sessionStorage.setItem('cart', JSON.stringify(this.productList));
+  }
+
+  private loadCartData() {
+    const cartData = sessionStorage.getItem('cart');
+    if (cartData) this.productList = JSON.parse(cartData);
   }
 }

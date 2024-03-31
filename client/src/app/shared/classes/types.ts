@@ -11,6 +11,15 @@ export enum EOrserStatus {
   ready = 'READY',
 }
 
+export enum EUnitOfMeasurement {
+  gram = 'GRAM',
+  kilogram = 'KILOGRAM',
+  liter = 'LITER',
+  milliliter = 'MILLILITER',
+  pcs = 'PCS',
+  box20gram = 'BOX 20 GRAM',
+}
+
 export interface IMessage {
   message: string;
 }
