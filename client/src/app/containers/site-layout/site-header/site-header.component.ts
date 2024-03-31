@@ -49,6 +49,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 })
 export class SiteHeaderComponent extends HeaderComponent {
   @Input() sidebarId: string = 'sidebar';
+  currentUserId = this.auth.getUserPayload()?.userId;
 
   constructor(
     private auth: AuthService,

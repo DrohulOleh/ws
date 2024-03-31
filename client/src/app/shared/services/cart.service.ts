@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { IProduct, IProductList } from '../classes/types';
 import { Subscription } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   cartSubscription!: Subscription;
-  public productList: IProductList[] = [];
+  public productList: Record<string, IProductList[]> = {};
   public price = '';
 
-  constructor() {}
+  constructor(private auth: AuthService) {}
 
-  addToCart(product: IProduct) {
+  addToCart(product: IProduct, userId: string) {
     const productListInCart: IProductList = Object.assign(
       {},
       {
@@ -27,41 +28,49 @@ export class CartService {
       }
     );
 
-    const candidate = this.productList.find(
+    if (!this.productList[userId]) {
+      this.productList[userId] = [];
+    }
+
+    const candidate = this.productList[userId].find(
       (p) => p._id === productListInCart._id
     );
 
     if (candidate) {
       candidate.quantity += productListInCart.quantity;
     } else {
-      this.productList.push(productListInCart);
+      this.productList[userId].push(productListInCart);
       //sessionStorage.setItem('cart', JSON.stringify(this.productList));
     }
 
-    this.calculatePrice();
+    this.calculatePrice(userId);
   }
 
-  getProductList() {
-    return this.productList;
+  getProductList(userId: string): IProductList[] {
+    return this.productList[userId] || [];
   }
 
-  deleteItemFromCart(productListInCart: IProductList) {
-    const idx = this.productList.findIndex(
+  deleteItemFromCart(productListInCart: IProductList, userId: string) {
+    if (!this.productList[userId]) return;
+
+    const idx = this.productList[userId].findIndex(
       (p) => p._id === productListInCart._id
     );
 
-    this.productList.splice(idx, 1);
+    if (idx !== -1) {
+      this.productList[userId].splice(idx, 1);
+    }
 
-    this.calculatePrice();
+    this.calculatePrice(userId);
   }
 
-  clearCart() {
-    this.productList = [];
+  clearCart(userId: string) {
+    this.productList[userId] = [];
     this.price = '';
   }
 
-  private calculatePrice() {
-    this.price = this.productList
+  private calculatePrice(userId: string) {
+    this.price = this.productList[userId]
       .reduce((acc, product) => (acc += product.cost * product.quantity), 0)
       .toFixed(2);
   }

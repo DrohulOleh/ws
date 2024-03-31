@@ -28,7 +28,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchingProducts = true;
-    this.productInCart = this.cartService.getProductList();
+    this.productInCart = this.cartService.getProductList(this.currentUserId);
     this.totalPrice = this.cartService.price;
 
     if (this.productInCart.length === 0) {
@@ -36,10 +36,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
     }
 
     this.fetchingProducts = false;
-    console.log(this.currentUserId);
+    console.log(this.productInCart);
   }
 
-  ngOnDestroy(): void {
-    this.productInCart = [];
-  }
+  ngOnDestroy(): void {}
 }

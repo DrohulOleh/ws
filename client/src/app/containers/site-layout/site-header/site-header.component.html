@@ -37,19 +37,19 @@
           <svg cIcon name="cilList" size="lg"></svg>
         </a>
       </c-nav-item> -->
-      <c-nav-item>
+      <c-nav-item *ngIf="cart.productList[currentUserId]">
         <a
           cNavLink
           routerLink="/cart"
-          [disabled]="cart.productList.length === 0"
+          [disabled]="cart.productList[currentUserId].length === 0"
         >
           <c-badge
-            *ngIf="cart.productList.length > 0"
+            *ngIf="cart.productList[currentUserId].length > 0"
             class="ms-1 float-end"
             color="danger"
             shape="rounded-pill"
             size="sm"
-            >{{ cart.productList.length }}</c-badge
+            >{{ cart.productList[currentUserId].length }}</c-badge
           >
           <svg cIcon name="cilCart" size="lg"></svg>
         </a>

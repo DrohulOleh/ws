@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
 import { IconModule } from '@coreui/icons-angular';
 import { CartService } from '../../shared/services/cart.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-product-page',
@@ -41,6 +42,7 @@ export class ProductPageComponent implements OnInit {
   productsInCategories: IProduct[] = [];
   selectedCategoryId = '';
   selectedCategoryName = '';
+  currentUserId = this.auth.getUserPayload()?.userId;
 
   fetchingProducts = false;
 
@@ -50,11 +52,13 @@ export class ProductPageComponent implements OnInit {
   showProductsByCategoryTEMPLATE = false;
 
   constructor(
+    private auth: AuthService,
     private productService: ProductService,
     private cartService: CartService
   ) {}
 
   ngOnInit(): void {
+    console.log(this.currentUserId);
     this.categories$ = this.productService.fetchCategories();
   }
 
@@ -118,8 +122,8 @@ export class ProductPageComponent implements OnInit {
     this.showProductsByCategoryTEMPLATE = false;
   }
 
-  addToCart(product: IProduct) {
-    this.cartService.addToCart(product);
+  addToCart(product: IProduct, userId: string) {
+    this.cartService.addToCart(product, this.currentUserId);
   }
 
   textTruncate(product: any) {

@@ -124,7 +124,7 @@
                 cButton
                 size="sm"
                 color="secondary"
-                (click)="addToCart(product)"
+                (click)="addToCart(product, currentUserId)"
               >
                 Add to cart
               </button></c-col
@@ -191,7 +191,7 @@
                 cButton
                 size="sm"
                 color="secondary"
-                (click)="addToCart(product)"
+                (click)="addToCart(product, currentUserId)"
                 [disabled]="!product.quantity"
               >
                 Add to cart
