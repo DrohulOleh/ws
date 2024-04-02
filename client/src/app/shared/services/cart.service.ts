@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IProduct, IProductList } from '../classes/types';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -47,6 +47,12 @@ export class CartService {
       this.productList[userId].push(productListInCart);
     }
     // Save cart data to sessionStorage after each update
+    this.saveCartData();
+    this.calculatePrice(userId);
+    this.calculateQuantity(userId);
+  }
+
+  updateQuantity(product: IProductList, userId: string) {
     this.saveCartData();
     this.calculatePrice(userId);
     this.calculateQuantity(userId);

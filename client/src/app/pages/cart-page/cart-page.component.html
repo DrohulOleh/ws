@@ -1,21 +1,39 @@
-<ng-container *ngIf="productInCart.length !== 0">
+<ng-container *ngIf="productInCart.length !== 0; else emptyCart">
   <c-card *ngFor="let product of productInCart" class="g-0 w-100 d-flex-col"
     ><c-row class="g-0"
       ><c-col [md]="1"><img [cCardImg] [src]="product.imageSrc" /></c-col>
-      <c-card-body cCol [md]="6">
+      <c-card-body cCol [md]="3">
         <h5 cCardTitle>{{ product.name }}</h5>
-        <p cCardText>{{ product.categoryName }}</p>
-        <p cCardText></p> </c-card-body
-      ><c-col
+        <p cCardText>{{ product.categoryName }}</p></c-card-body
+      ><c-col class="justify-content-center align-items-center d-flex"
         ><small *ngIf="product.unit" class="text-medium-emphasis">{{
           product.unit
         }}</small></c-col
-      ><c-col [md]="1">{{ product.quantity }}</c-col
-      ><c-col [md]="1">{{ product.cost | currency : "EUR" }}</c-col
-      ><c-col [md]="2">{{
-        product.quantity * product.cost | currency : "EUR"
-      }}</c-col></c-row
-    >
+      ><c-col [md]="2" class="justify-content-center align-items-center d-flex"
+        ><a
+          (click)="minusQty(product)"
+          class="minusQty"
+          [class.disabled]="product.quantity === 1"
+          ><svg cIcon name="cilMinus"></svg></a
+        >&nbsp;&nbsp;<strong>{{ product.quantity }}</strong
+        >&nbsp;&nbsp;<a class="plusQty" (click)="plusQty(product)"
+          ><svg cIcon name="cilPlus"></svg></a></c-col
+      ><c-col
+        [md]="1"
+        class="justify-content-center align-items-center d-flex"
+        >{{ product.cost | currency : "EUR" }}</c-col
+      ><c-col
+        [md]="1"
+        class="justify-content-center align-items-center d-flex"
+        >{{ product.quantity * product.cost | currency : "EUR" }}</c-col
+      ><c-col
+        [md]="1"
+        class="justify-content-center align-items-center d-flex trash"
+        ><a (click)="delteProduct(product)"
+          ><svg cIcon name="cilTrash" size="lg"></svg></a></c-col
+    ></c-row>
   </c-card>
-  <div *ngIf="totalPrice">{{ totalPrice | currency : "EUR" }}</div>
+  <div *ngIf="totalAmmount">{{ totalAmmount | currency : "EUR" }}</div>
 </ng-container>
+
+<ng-template #emptyCart><h3>Cart is empty</h3></ng-template>

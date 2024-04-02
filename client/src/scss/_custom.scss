@@ -43,3 +43,23 @@
   text-overflow: initial;
   cursor: pointer;
 }
+
+.trash:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.minusQty:hover {
+  cursor: pointer;
+  color: red;
+}
+
+.minusQty.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.plusQty:hover {
+  cursor: pointer;
+  color: green;
+}
