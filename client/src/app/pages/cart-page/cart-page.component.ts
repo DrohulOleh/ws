@@ -21,6 +21,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
   totalAmmount = '';
   fetchingProducts = false;
   cartSubscription!: Subscription;
+  orderSubscription!: Subscription;
 
   constructor(
     private cartService: CartService,

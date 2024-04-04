@@ -13,10 +13,12 @@ import {
   cilMinus,
   cilPlus,
   cilTrash,
+  cilPencil,
 } from '@coreui/icons';
 
 export const iconSubset = {
   cilAt,
+  cilPencil,
   cilTrash,
   cilMinus,
   cilPlus,
@@ -47,4 +49,5 @@ export enum EIconSubset {
   cilMinus = 'cilMinus',
   cilPlus = 'cilPlus',
   cilTrash = 'cilTrash',
+  cilPencil = 'cilPencil',
 }

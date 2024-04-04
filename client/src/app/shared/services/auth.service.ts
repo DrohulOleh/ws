@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IUser } from '../classes/types';
+import { EUserRoles, IUser } from '../classes/types';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
   private token: null | any;
+  currentUserRole = this.getUserPayload()?.role;
 
   constructor(private http: HttpClient) {}
 
@@ -49,5 +50,10 @@ export class AuthService {
     } else {
       return null;
     }
+  }
+
+  isAdmin(): boolean {
+    if (this.currentUserRole === EUserRoles.admin) return true;
+    return false;
   }
 }

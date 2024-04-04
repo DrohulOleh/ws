@@ -1,11 +1,10 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Observable, switchMap, map } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, switchMap, map, Subscription } from 'rxjs';
 import { ICategory, IProduct } from '../../shared/classes/types';
 import { ProductService } from '../../shared/services/product.service';
 import {
   ButtonModule,
   CardModule,
-  CollapseModule,
   FormModule,
   GridModule,
   SpinnerModule,
@@ -35,7 +34,7 @@ import { AuthService } from '../../shared/services/auth.service';
   ],
   templateUrl: './product-page.component.html',
 })
-export class ProductPageComponent implements OnInit {
+export class ProductPageComponent implements OnInit, OnDestroy {
   //@ViewChild('ellipsisText') ellipsisText!: ElementRef;
   categories$!: Observable<ICategory[]>;
   productsAll: IProduct[] = [];
@@ -43,6 +42,9 @@ export class ProductPageComponent implements OnInit {
   selectedCategoryId = '';
   selectedCategoryName = '';
   currentUserId = this.auth.getUserPayload()?.userId;
+  currentUserIsAdmin = this.auth.isAdmin();
+
+  productSubscription!: Subscription;
 
   fetchingProducts = false;
 
@@ -71,16 +73,18 @@ export class ProductPageComponent implements OnInit {
     this.selectedCategoryId = categoryId;
     this.selectedCategoryName = categoryName;
 
-    this.productService.fetchProductsByCategoryId(categoryId).subscribe({
-      next: (productsInCategories) => {
-        this.productsInCategories = productsInCategories.map((product) => {
-          product.categoryName = this.selectedCategoryName;
-          product.quantity = 1;
-          return product;
-        });
-        this.fetchingProducts = false;
-      },
-    });
+    this.productSubscription = this.productService
+      .fetchProductsByCategoryId(categoryId)
+      .subscribe({
+        next: (productsInCategories) => {
+          this.productsInCategories = productsInCategories.map((product) => {
+            product.categoryName = this.selectedCategoryName;
+            product.quantity = 1;
+            return product;
+          });
+          this.fetchingProducts = false;
+        },
+      });
   }
 
   showProductsAll() {
@@ -89,7 +93,7 @@ export class ProductPageComponent implements OnInit {
 
     this.fetchingProducts = true;
 
-    this.productService
+    this.productSubscription = this.productService
       .fetchProducts()
       .pipe(
         switchMap((productsAll) => {
@@ -126,7 +130,15 @@ export class ProductPageComponent implements OnInit {
     this.cartService.addToCart(product, this.currentUserId);
   }
 
+  editCategory(categoryId: string) {
+    console.log('editCategory', this.currentUserIsAdmin);
+  }
+
   textTruncate(product: any) {
     product.isDescriptionTrancated = !product.isDescriptionTrancated;
+  }
+
+  ngOnDestroy(): void {
+    if (this.productSubscription) this.productSubscription.unsubscribe();
   }
 }

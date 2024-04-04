@@ -30,7 +30,18 @@
             <c-card-body>
               <h2 cCardTitle>{{ category.name }}</h2>
             </c-card-body>
-          </div></c-card
+          </div>
+          <button *ngIf="!currentUserIsAdmin"
+            cButton
+            type="button"
+            size="sm"
+            class="float-end mb-1 z-index-2"
+            variant="ghost"
+            (click)="editCategory(category._id ? category._id : '')"
+          >
+            <svg cIcon name="cil-pencil" size="lg" class="me-2"></svg>
+            Edit category
+          </button></c-card
         >
       </c-row>
     </div>

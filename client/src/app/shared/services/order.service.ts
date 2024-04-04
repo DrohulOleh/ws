@@ -10,9 +10,7 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   fetchOrders(params: any = {}): Observable<IOrder[]> {
-    return this.http.get<IOrder[]>('/api/order', {
-      params: new HttpParams({ fromObject: params }),
-    });
+    return this.http.get<IOrder[]>('/api/order');
   }
 
   createOrder(order: IOrder): Observable<IOrder> {
