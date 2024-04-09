@@ -60,6 +60,16 @@ module.exports.registration = async function (req, res) {
   }
 };
 
+module.exports.getAll = async function (req, res) {
+  try {
+    const users = await User.find({});
+
+    res.status(200).json(users);
+  } catch (err) {
+    errorHandler(res, err);
+  }
+};
+
 module.exports.update = async function (req, res) {
   try {
   } catch (err) {

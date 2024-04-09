@@ -60,7 +60,6 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.currentUserId);
     this.categories$ = this.productService.fetchCategories();
   }
 

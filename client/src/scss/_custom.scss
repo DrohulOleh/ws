@@ -44,9 +44,25 @@
   cursor: pointer;
 }
 
+.trash {
+  color: rgba(44, 56, 74, 0.95);
+}
+
 .trash:hover {
   cursor: pointer;
   color: red;
+}
+
+.trash.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+.minusQty {
+  color: rgba(44, 56, 74, 0.95);
+}
+
+.plusQty {
+  color: rgba(44, 56, 74, 0.95);
 }
 
 .minusQty:hover {
@@ -62,4 +78,9 @@
 .plusQty:hover {
   cursor: pointer;
   color: green;
+}
+
+.plusQty.disabled {
+  pointer-events: none;
+  cursor: default;
 }

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../../shared/services/cart.service';
-import { CardModule, GridModule } from '@coreui/angular';
-import { IProduct, IProductList } from '../../shared/classes/types';
+import { ButtonModule, CardModule, GridModule } from '@coreui/angular';
+import { IOrder, IProduct, IProductList } from '../../shared/classes/types';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { OrderService } from '../../shared/services/order.service';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-cart-page',
   standalone: true,
-  imports: [CardModule, GridModule, CommonModule, IconModule],
+  imports: [CardModule, GridModule, CommonModule, IconModule, ButtonModule],
   templateUrl: './cart-page.component.html',
 })
 export class CartPageComponent implements OnInit, OnDestroy {
@@ -20,6 +20,8 @@ export class CartPageComponent implements OnInit, OnDestroy {
   productInCart: IProductList[] = [];
   totalAmmount = '';
   fetchingProducts = false;
+  pendingOrder = false;
+
   cartSubscription!: Subscription;
   orderSubscription!: Subscription;
 
@@ -58,5 +60,28 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.cartSubscription) this.cartSubscription.unsubscribe();
+    if (this.orderSubscription) this.orderSubscription.unsubscribe();
+  }
+
+  orderProduct() {
+    this.pendingOrder = true;
+
+    const order: IOrder = {
+      list: this.cartService.productList[this.currentUserId].map((product) => {
+        delete product._id;
+        delete product.imageSrc;
+        return product;
+      }),
+    };
+
+    this.orderSubscription = this.orderService.createOrder(order).subscribe({
+      next: (newOrder) => {
+        this.cartService.clearCart(this.currentUserId);
+      },
+      complete: () => {
+        this.router.navigate(['/order']);
+        this.pendingOrder = false;
+      },
+    });
   }
 }

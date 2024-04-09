@@ -25,6 +25,10 @@ export class AuthService {
     );
   }
 
+  fetchUsers(): Observable<IUser[]> {
+    return this.http.get<IUser[]>('/api/user');
+  }
+
   setToken(token: string) {
     this.token = token;
   }

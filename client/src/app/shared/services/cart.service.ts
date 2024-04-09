@@ -19,7 +19,7 @@ export class CartService {
   }
 
   addToCart(product: IProduct, userId: string) {
-    const productListInCart: IProductList = Object.assign(
+    /* const productListInCart: IProductList = Object.assign(
       {},
       {
         _id: product._id,
@@ -31,7 +31,17 @@ export class CartService {
         quantity: product.quantity,
         unit: product.unit,
       }
-    );
+    ); */
+    const productListInCart: IProductList = {
+      _id: product._id,
+      //category: product.category,
+      categoryName: product.categoryName,
+      cost: product.cost,
+      imageSrc: product.imageSrc,
+      name: product.name,
+      quantity: product.quantity,
+      unit: product.unit,
+    };
 
     if (!this.productList[userId]) {
       this.productList[userId] = [];

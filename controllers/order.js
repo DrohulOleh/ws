@@ -8,13 +8,12 @@ module.exports.getAll = async function (req, res) {
 
     if (currentUser.role !== roles.admin) {
       const orders = await Order.find({ user: req.user.id }).sort({ date: -1 });
+      res.status(200).json(orders);
+    } else {
+      const orders = await Order.find({}).sort({ date: -1 });
 
       res.status(200).json(orders);
     }
-
-    const orders = await Order.find({}).sort({ date: -1 });
-
-    res.status(200).json(orders);
   } catch (err) {
     errorHandler(res, err);
   }

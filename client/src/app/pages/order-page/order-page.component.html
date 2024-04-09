@@ -1,1 +1,51 @@
-<p>order-page works!</p>
+<table cTable hover *ngIf="orders.length !== 0; else loader">
+  <thead>
+    <tr>
+      <th scope="col" *ngIf="currentUserIsAdmin">User</th>
+      <th scope="col">Date</th>
+      <th scope="col">Amount</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders">
+      <td *ngIf="currentUserIsAdmin">{{ order.user }}</td>
+      <td>
+        {{ order.date | date : "d MMM yyyy" }}&nbsp;{{
+          order.date | date : "HH:mm"
+        }}
+      </td>
+      <td>{{ calculateAmount(order) | currency : "EUR" }}</td>
+      <td>
+        <a class="trash" (click)="selectOrder(order)"
+          ><svg cIcon name="cilExternalLink"></svg>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #modalOrder
+  ><c-modal backdrop="static" id="modalOrder" #modalOrder
+    ><div *ngIf="selectOrder">
+      <c-modal-header>
+        <h5 cModalTitle>Order No. {{ selectedOrder.order }}</h5>
+      </c-modal-header>
+      <c-modal-body
+        >Woohoo, you&#39;re reading this text in a modal!</c-modal-body
+      >
+      <c-modal-footer>
+        <button [cModalToggle]="modalOrder.id" cButton color="secondary">
+          Close
+        </button>
+        <button cButton color="primary">Understood</button>
+      </c-modal-footer>
+    </div>
+  </c-modal>
+</ng-template>
+
+<ng-template #loader>
+  <div class="myspinner">
+    <c-spinner></c-spinner>
+  </div>
+</ng-template>

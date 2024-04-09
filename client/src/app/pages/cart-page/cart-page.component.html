@@ -13,10 +13,13 @@
         ><a
           (click)="minusQty(product)"
           class="minusQty"
-          [class.disabled]="product.quantity === 1"
+          [class.disabled]="product.quantity === 1 || pendingOrder"
           ><svg cIcon name="cilMinus"></svg></a
         >&nbsp;&nbsp;<strong>{{ product.quantity }}</strong
-        >&nbsp;&nbsp;<a class="plusQty" (click)="plusQty(product)"
+        >&nbsp;&nbsp;<a
+          class="plusQty"
+          (click)="plusQty(product)"
+          [class.disabled]="pendingOrder"
           ><svg cIcon name="cilPlus"></svg></a></c-col
       ><c-col
         [md]="1"
@@ -26,14 +29,28 @@
         [md]="1"
         class="justify-content-center align-items-center d-flex"
         >{{ product.quantity * product.cost | currency : "EUR" }}</c-col
-      ><c-col
-        [md]="1"
-        class="justify-content-center align-items-center d-flex trash"
-        ><a (click)="delteProduct(product)"
+      ><c-col [md]="1" class="justify-content-center align-items-center d-flex"
+        ><a
+          (click)="delteProduct(product)"
+          class="trash"
+          [class.disabled]="pendingOrder"
           ><svg cIcon name="cilTrash" size="lg"></svg></a></c-col
     ></c-row>
   </c-card>
-  <div *ngIf="totalAmmount">{{ totalAmmount | currency : "EUR" }}</div>
+  <div *ngIf="totalAmmount">
+    <h4 class="mt-3 text-end">
+      Total ammount:&nbsp;{{ totalAmmount | currency : "EUR" }}
+    </h4>
+    <button
+      cButton
+      class="mt-3 justify-content-center align-items-center d-flex"
+      color="success"
+      [disabled]="pendingOrder"
+      (click)="orderProduct()"
+    >
+      Complete order
+    </button>
+  </div>
 </ng-container>
 
 <ng-template #emptyCart><h3>Cart is empty</h3></ng-template>
