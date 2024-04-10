@@ -1,5 +1,7 @@
 import {
   cilAt,
+  cilPlaylistAdd,
+  cilX,
   cilLockLocked,
   cilUser,
   cilChartLine,
@@ -19,6 +21,8 @@ import {
 
 export const iconSubset = {
   cilAt,
+  cilPlaylistAdd,
+  cilX,
   cilExternalLink,
   cilPencil,
   cilTrash,
@@ -53,4 +57,6 @@ export enum EIconSubset {
   cilTrash = 'cilTrash',
   cilPencil = 'cilPencil',
   cilExternalLink = 'cilExternalLink',
+  cilX = 'cilX',
+  cilPlaylistAdd = 'cilPlaylistAdd',
 }

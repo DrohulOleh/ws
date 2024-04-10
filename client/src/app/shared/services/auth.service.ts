@@ -57,7 +57,10 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    if (this.currentUserRole === EUserRoles.admin) return true;
-    return false;
+    if (this.currentUserRole === EUserRoles.admin) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

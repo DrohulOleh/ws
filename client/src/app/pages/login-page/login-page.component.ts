@@ -18,6 +18,7 @@ import {
 import { IconModule } from '@coreui/icons-angular';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../shared/services/auth.service';
+import { EUserRoles } from '../../shared/classes/types';
 
 @Component({
   selector: 'app-login-page',
@@ -41,7 +42,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   toastService: ToasterService | any;
 
   constructor(
-    private auth: AuthService,
+    private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -71,9 +72,13 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.form.disable();
 
-    this.aSub = this.auth.login(this.form.value).subscribe({
+    this.aSub = this.authService.login(this.form.value).subscribe({
       next: () => {
-        this.router.navigate(['/overview']);
+        if (this.authService.getUserPayload()?.role === EUserRoles.admin) {
+          this.router.navigate(['/overview']);
+        } else {
+          this.router.navigate(['/product']);
+        }
       },
       error: (err) => {
         console.warn(err.message);

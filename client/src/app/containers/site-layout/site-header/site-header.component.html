@@ -37,7 +37,7 @@
           <svg cIcon name="cilList" size="lg"></svg>
         </a>
       </c-nav-item> -->
-      <c-nav-item>
+      <c-nav-item *ngIf="!currentUserIsAdmin">
         <a cNavLink routerLink="/cart" [disabled]="cart.totalQantity === 0">
           <c-badge
             *ngIf="cart.totalQantity > 0 && cart.totalQantity < 99"

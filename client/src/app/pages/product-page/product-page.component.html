@@ -1,3 +1,18 @@
+<div
+  *ngIf="currentUserIsAdmin"
+  class="mb-4 align-items-center d-flex flex-row justify-content-end"
+>
+  <button
+    cButton
+    class="float-end mb-1 z-index-2"
+    variant="ghost"
+    size="lg"
+    color="dark"(click)="addProduct()"
+  >
+    <svg cIcon name="cil-playlist-add" size="lg" class="me-2"></svg>Add product
+  </button>
+</div>
+
 <div *ngIf="showProductsInCategoriesSwitcherTEMPLATE" class="mb-4">
   <c-form-check
     inline="true"
@@ -31,7 +46,8 @@
               <h2 cCardTitle>{{ category.name }}</h2>
             </c-card-body>
           </div>
-          <button *ngIf="!currentUserIsAdmin"
+          <button
+            *ngIf="currentUserIsAdmin"
             cButton
             type="button"
             size="sm"
@@ -119,6 +135,20 @@
               class="align-items-center d-flex flex-column justify-content-center"
               ><h6>{{ product.cost | currency : "EUR" }}</h6></c-col
             ><c-col
+              *ngIf="currentUserIsAdmin"
+              [md]="1"
+              class="align-items-center d-flex flex-column justify-content-center"
+              ><button
+                cButton
+                size="sm"
+                color="dark"
+                (click)="editProduct(product._id ? product._id : '')"
+              >
+                <svg cIcon name="cil-pencil" size="lg" class="me-2"></svg>
+                Edit product
+              </button></c-col
+            ><c-col
+              *ngIf="!currentUserIsAdmin"
               [md]="1"
               class="align-items-center d-flex flex-column justify-content-center"
             >
@@ -134,7 +164,7 @@
                 [disabled]="!product.quantity"
                 cButton
                 size="sm"
-                color="secondary"
+                color="dark"
                 (click)="addToCart(product, currentUserId)"
               >
                 Add to cart
@@ -187,6 +217,20 @@
               class="align-items-center d-flex flex-column justify-content-center"
               ><h6>{{ product.cost | currency : "EUR" }}</h6></c-col
             ><c-col
+              *ngIf="currentUserIsAdmin"
+              [md]="1"
+              class="align-items-center d-flex flex-column justify-content-center"
+              ><button
+                cButton
+                size="sm"
+                color="dark"
+                (click)="editProduct(product._id ? product._id : '')"
+              >
+                <svg cIcon name="cil-pencil" size="lg" class="me-2"></svg>
+                Edit product
+              </button></c-col
+            ><c-col
+              *ngIf="!currentUserIsAdmin"
               [md]="1"
               class="align-items-center d-flex flex-column justify-content-center"
             >
@@ -201,7 +245,7 @@
               <button
                 cButton
                 size="sm"
-                color="secondary"
+                color="dark"
                 (click)="addToCart(product, currentUserId)"
                 [disabled]="!product.quantity"
               >
@@ -223,3 +267,5 @@
     <c-spinner></c-spinner>
   </div>
 </ng-template>
+
+

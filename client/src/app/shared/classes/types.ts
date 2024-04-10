@@ -25,6 +25,7 @@ export interface IMessage {
 }
 
 export interface IUser {
+  _id: string | undefined;
   email: string;
   isRegistrationComplete: boolean;
   password: string;
@@ -62,6 +63,7 @@ export interface IOrder {
   list?: IProductList[];
   order?: number;
   user?: string;
+  email?: string;
 }
 
 export interface IProductList {

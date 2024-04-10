@@ -9,7 +9,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let order of orders">
-      <td *ngIf="currentUserIsAdmin">{{ order.user }}</td>
+      <td *ngIf="currentUserIsAdmin">{{ order.email }}</td>
       <td>
         {{ order.date | date : "d MMM yyyy" }}&nbsp;{{
           order.date | date : "HH:mm"
@@ -25,24 +25,65 @@
   </tbody>
 </table>
 
-<ng-template #modalOrder
-  ><c-modal backdrop="static" id="modalOrder" #modalOrder
-    ><div *ngIf="selectOrder">
-      <c-modal-header>
-        <h5 cModalTitle>Order No. {{ selectedOrder.order }}</h5>
-      </c-modal-header>
-      <c-modal-body
-        >Woohoo, you&#39;re reading this text in a modal!</c-modal-body
+<c-modal
+  size="lg"
+  [visible]="modalVisible"
+  (visibleChange)="modalVisible = $event"
+  backdrop="static"
+  id="modalOrder"
+  #modalOrder
+  ><div *ngIf="selectedOrder">
+    <c-modal-header>
+      <h4 cModalTitle>
+        Order No.{{ selectedOrder.order }} dated
+        {{ selectedOrder.date | date : "dd.MM.yy" }}&nbsp;{{
+          selectedOrder.date | date : "HH:mm"
+        }}&nbsp;by&nbsp;{{ currentUserIsAdmin ? selectedOrder.email : "" }}
+      </h4>
+    </c-modal-header>
+    <c-modal-body
+      ><table cTable hover>
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of selectedOrder.list">
+            <td>{{ item.name }}&nbsp;in&nbsp;{{ item.categoryName }}</td>
+            <td>{{ item.unit }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.cost | currency : "EUR" }}</td>
+            <td>{{ item.quantity * item.cost | currency : "EUR" }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <h5>
+          Total amount&nbsp;<strong>{{
+            calculateAmount(selectedOrder) | currency : "EUR"
+          }}</strong>
+        </h5>
+      </div></c-modal-body
+    >
+    <c-modal-footer>
+      <button
+        (click)="toggleModal()"
+        cButton
+        color="dark"
+        variant="ghost"
+        class="mb-3 d-flex align-items-center justify-content-center"
       >
-      <c-modal-footer>
-        <button [cModalToggle]="modalOrder.id" cButton color="secondary">
-          Close
-        </button>
-        <button cButton color="primary">Understood</button>
-      </c-modal-footer>
-    </div>
-  </c-modal>
-</ng-template>
+        <svg cIcon name="cil-x" size="lg" class="me-2"></svg>
+        Close
+      </button>
+    </c-modal-footer>
+  </div>
+</c-modal>
 
 <ng-template #loader>
   <div class="myspinner">

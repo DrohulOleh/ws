@@ -10,6 +10,7 @@ import { OrderService } from '../../shared/services/order.service';
 import { Subscription } from 'rxjs';
 import {
   ButtonModule,
+  ModalComponent,
   ModalModule,
   ModalService,
   SpinnerModule,
@@ -41,7 +42,8 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
   loading = false;
   currentUserIsAdmin = this.authService.isAdmin();
   selectedOrder!: IOrder;
-  modalOrder = new ModalModule();
+  modalOrder!: ModalComponent;
+  modalVisible = false;
 
   orderSubscription!: Subscription;
   authSubscription!: Subscription;
@@ -52,19 +54,25 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.authSubscription = this.authService
-      .fetchUsers()
-      .subscribe({ next: (users) => (this.users = users) });
+    this.authSubscription = this.authService.fetchUsers().subscribe({
+      next: (users) => {
+        this.users = users;
+      },
+    });
 
-    this.orderSubscription = this.orderService
-      .fetchOrders()
-      .subscribe({ next: (orders) => (this.orders = orders) });
+    this.orderSubscription = this.orderService.fetchOrders().subscribe({
+      next: (orders) => {
+        this.orders = this.addEmailsToOrders(orders);
+        console.log(this.orders);
+      },
+    });
   }
 
   ngAfterViewInit(): void {}
 
   selectOrder(order: IOrder) {
     this.selectedOrder = order;
+    this.toggleModal();
   }
 
   ngOnDestroy(): void {
@@ -76,5 +84,19 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
     return order.list?.reduce((acc, item) => {
       return (acc += (item.quantity || 0) * item.cost);
     }, 0);
+  }
+
+  toggleModal() {
+    this.modalVisible = !this.modalVisible;
+  }
+
+  addEmailsToOrders(orders: IOrder[]): IOrder[] {
+    return orders.map((order) => {
+      const user = this.users.find((user) => user._id === order.user);
+      if (user) {
+        return { ...order, email: user.email }; // Создаем новый объект с добавленным email
+      }
+      return order;
+    });
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, switchMap, map, Subscription } from 'rxjs';
-import { ICategory, IProduct } from '../../shared/classes/types';
+import { EUserRoles, ICategory, IProduct } from '../../shared/classes/types';
 import { ProductService } from '../../shared/services/product.service';
 import {
   ButtonModule,
@@ -35,14 +35,14 @@ import { AuthService } from '../../shared/services/auth.service';
   templateUrl: './product-page.component.html',
 })
 export class ProductPageComponent implements OnInit, OnDestroy {
-  //@ViewChild('ellipsisText') ellipsisText!: ElementRef;
   categories$!: Observable<ICategory[]>;
   productsAll: IProduct[] = [];
   productsInCategories: IProduct[] = [];
   selectedCategoryId = '';
   selectedCategoryName = '';
   currentUserId = this.auth.getUserPayload()?.userId;
-  currentUserIsAdmin = this.auth.isAdmin();
+  currentUserIsAdmin =
+    this.auth.getUserPayload()?.role === EUserRoles.admin ? true : false;
 
   productSubscription!: Subscription;
 
@@ -130,7 +130,15 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   }
 
   editCategory(categoryId: string) {
-    console.log('editCategory', this.currentUserIsAdmin);
+    console.log('editCategory', categoryId);
+  }
+
+  editProduct(productId: string) {
+    console.log('editProduct', productId);
+  }
+
+  addProduct() {
+    console.log('addProduct');
   }
 
   textTruncate(product: any) {

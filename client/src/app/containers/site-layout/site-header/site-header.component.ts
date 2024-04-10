@@ -22,6 +22,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../../shared/services/cart.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { EUserRoles } from '../../../shared/classes/types';
 
 @Component({
   selector: 'app-site-header',
@@ -50,6 +51,8 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class SiteHeaderComponent extends HeaderComponent {
   @Input() sidebarId: string = 'sidebar';
   currentUserId = this.auth.getUserPayload()?.userId;
+  currentUserIsAdmin =
+    this.auth.getUserPayload()?.role === EUserRoles.admin ? true : false;
   //productListInCart= this.cart.getProductList(this.currentUserId);
 
   constructor(
