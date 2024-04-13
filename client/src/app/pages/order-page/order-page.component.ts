@@ -12,11 +12,10 @@ import {
   ButtonModule,
   ModalComponent,
   ModalModule,
-  ModalService,
   SpinnerModule,
   TableModule,
 } from '@coreui/angular';
-import { IOrder, IUser } from '../../shared/classes/types';
+import { EUserRoles, IOrder, IUser } from '../../shared/classes/types';
 import { IconModule } from '@coreui/icons-angular';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../shared/services/auth.service';
@@ -40,9 +39,10 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
   orders: IOrder[] = [];
   users: IUser[] = [];
   loading = false;
-  currentUserIsAdmin = this.authService.isAdmin();
+  currentUserIsAdmin =
+    this.authService.getUserPayload()?.role === EUserRoles.admin ? true : false;
   selectedOrder!: IOrder;
-  modalOrder!: ModalComponent;
+  // modalOrder!: ModalComponent;
   modalVisible = false;
 
   orderSubscription!: Subscription;
@@ -63,9 +63,10 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.orderSubscription = this.orderService.fetchOrders().subscribe({
       next: (orders) => {
         this.orders = this.addEmailsToOrders(orders);
-        console.log(this.orders);
       },
     });
+
+    console.log(this.currentUserIsAdmin);
   }
 
   ngAfterViewInit(): void {}

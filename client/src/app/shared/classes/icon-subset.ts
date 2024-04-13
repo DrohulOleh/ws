@@ -17,10 +17,14 @@ import {
   cilTrash,
   cilPencil,
   cilExternalLink,
+  cilXCircle,
+  cilSave,
 } from '@coreui/icons';
 
 export const iconSubset = {
   cilAt,
+  cilSave,
+  cilXCircle,
   cilPlaylistAdd,
   cilX,
   cilExternalLink,
@@ -59,4 +63,6 @@ export enum EIconSubset {
   cilExternalLink = 'cilExternalLink',
   cilX = 'cilX',
   cilPlaylistAdd = 'cilPlaylistAdd',
+  cilXCircle = 'cilXCircle',
+  cilSave = 'cilSave',
 }

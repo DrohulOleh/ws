@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Observable, switchMap, map, Subscription } from 'rxjs';
 import { EUserRoles, ICategory, IProduct } from '../../shared/classes/types';
 import { ProductService } from '../../shared/services/product.service';
@@ -7,13 +14,14 @@ import {
   CardModule,
   FormModule,
   GridModule,
+  ModalModule,
   SpinnerModule,
 } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { IconModule } from '@coreui/icons-angular';
 import { CartService } from '../../shared/services/cart.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -22,7 +30,6 @@ import { AuthService } from '../../shared/services/auth.service';
   imports: [
     ButtonModule,
     CardModule,
-    //CollapseModule,
     CommonModule,
     FormModule,
     FormsModule,
@@ -31,18 +38,30 @@ import { AuthService } from '../../shared/services/auth.service';
     ReactiveFormsModule,
     RouterLink,
     SpinnerModule,
+    ModalModule,
   ],
   templateUrl: './product-page.component.html',
 })
-export class ProductPageComponent implements OnInit, OnDestroy {
+export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('modalEditCategory') modalEditCategoryRef!: ElementRef;
+
   categories$!: Observable<ICategory[]>;
   productsAll: IProduct[] = [];
   productsInCategories: IProduct[] = [];
   selectedCategoryId = '';
   selectedCategoryName = '';
-  currentUserId = this.auth.getUserPayload()?.userId;
+  selectedCategory!: ICategory;
+  currentUserId = this.authService.getUserPayload()?.userId;
   currentUserIsAdmin =
-    this.auth.getUserPayload()?.role === EUserRoles.admin ? true : false;
+    this.authService.getUserPayload()?.role === EUserRoles.admin ? true : false;
+
+  modalEditCategoryVisible = false;
+  modalEditProductVisible = false;
+
+  formEditCategory: FormGroup | any;
+  formCreateProduct: FormGroup | any;
+  image!: File;
+  imagePreview: any = '';
 
   productSubscription!: Subscription;
 
@@ -54,7 +73,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   showProductsByCategoryTEMPLATE = false;
 
   constructor(
-    private auth: AuthService,
+    private authService: AuthService,
     private productService: ProductService,
     private cartService: CartService
   ) {}
@@ -62,6 +81,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.categories$ = this.productService.fetchCategories();
   }
+
+  ngAfterViewInit(): void {}
 
   showProductsByCategory(categoryId: string, categoryName: string) {
     this.showCategoriesTEMPLATE = false;
@@ -129,8 +150,10 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.cartService.addToCart(product, this.currentUserId);
   }
 
-  editCategory(categoryId: string) {
-    console.log('editCategory', categoryId);
+  editCategory(category: ICategory) {
+    this.selectedCategory = category;
+    this.toggleModalEditCategory();
+    console.log('editCategory', category.name);
   }
 
   editProduct(productId: string) {
@@ -143,6 +166,10 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   textTruncate(product: any) {
     product.isDescriptionTrancated = !product.isDescriptionTrancated;
+  }
+
+  toggleModalEditCategory() {
+    this.modalEditCategoryVisible = !this.modalEditCategoryVisible;
   }
 
   ngOnDestroy(): void {

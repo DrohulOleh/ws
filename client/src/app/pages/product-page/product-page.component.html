@@ -7,7 +7,8 @@
     class="float-end mb-1 z-index-2"
     variant="ghost"
     size="lg"
-    color="dark"(click)="addProduct()"
+    color="dark"
+    (click)="addProduct()"
   >
     <svg cIcon name="cil-playlist-add" size="lg" class="me-2"></svg>Add product
   </button>
@@ -53,7 +54,8 @@
             size="sm"
             class="float-end mb-1 z-index-2"
             variant="ghost"
-            (click)="editCategory(category._id ? category._id : '')"
+            color="dark"
+            (click)="editCategory(category)"
           >
             <svg cIcon name="cil-pencil" size="lg" class="me-2"></svg>
             Edit category
@@ -268,4 +270,38 @@
   </div>
 </ng-template>
 
-
+<c-modal
+  [visible]="modalEditCategoryVisible"
+  (visibleChange)="modalEditCategoryVisible = $event"
+  backdrop="static"
+  id="modalEditCategory"
+  #modalEditCategory
+  ><div *ngIf="selectedCategory">
+    <c-modal-header
+      ><h4 cModalTitle>
+        Edit category <strong>{{ selectedCategory.name }}</strong>
+      </h4></c-modal-header
+    ><c-modal-footer
+      ><button
+        cButton
+        color="primary"
+        variant="outline"
+        size="sm"
+        class="mb-3 d-flex align-items-center justify-content-center"
+      ><svg cIcon name="cil-save" size="lg" class="me-2"></svg>
+        Save
+      </button>
+      <button
+        (click)="toggleModalEditCategory()"
+        cButton
+        color="secondary"
+        variant="outline"
+        size="sm"
+        class="mb-3 d-flex align-items-center justify-content-center"
+      >
+        <svg cIcon name="cil-x-circle" size="lg" class="me-2"></svg>
+        Cancel
+      </button>
+    </c-modal-footer>
+  </div></c-modal
+>
