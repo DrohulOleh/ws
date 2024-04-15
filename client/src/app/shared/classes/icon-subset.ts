@@ -1,5 +1,6 @@
 import {
   cilAt,
+  cilCloudUpload,
   cilPlaylistAdd,
   cilX,
   cilLockLocked,
@@ -23,6 +24,7 @@ import {
 
 export const iconSubset = {
   cilAt,
+  cilCloudUpload,
   cilSave,
   cilXCircle,
   cilPlaylistAdd,
@@ -65,4 +67,5 @@ export enum EIconSubset {
   cilPlaylistAdd = 'cilPlaylistAdd',
   cilXCircle = 'cilXCircle',
   cilSave = 'cilSave',
+  cilCloudUpload = 'cilCloudUpload',
 }

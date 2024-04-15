@@ -26,7 +26,14 @@ export class ProductService {
     name: string,
     image?: File
   ): Observable<ICategory> {
-    return this.http.patch<ICategory>(`/api/category/${id}`, { name, image });
+    const fd = new FormData();
+
+    if (image) {
+      fd.append('image', image, image.name);
+    }
+    fd.append('name', name);
+
+    return this.http.patch<ICategory>(`/api/category/${id}`, fd);
   }
 
   deleteCategory(id: string): Observable<IMessage> {

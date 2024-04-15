@@ -277,31 +277,118 @@
   id="modalEditCategory"
   #modalEditCategory
   ><div *ngIf="selectedCategory">
-    <c-modal-header
-      ><h4 cModalTitle>
-        Edit category <strong>{{ selectedCategory.name }}</strong>
-      </h4></c-modal-header
-    ><c-modal-footer
-      ><button
-        cButton
-        color="primary"
-        variant="outline"
-        size="sm"
-        class="mb-3 d-flex align-items-center justify-content-center"
-      ><svg cIcon name="cil-save" size="lg" class="me-2"></svg>
-        Save
-      </button>
-      <button
-        (click)="toggleModalEditCategory()"
-        cButton
-        color="secondary"
-        variant="outline"
-        size="sm"
-        class="mb-3 d-flex align-items-center justify-content-center"
-      >
-        <svg cIcon name="cil-x-circle" size="lg" class="me-2"></svg>
-        Cancel
-      </button>
-    </c-modal-footer>
+    <form
+      cForm
+      novalidate
+      [formGroup]="formEditCategory"
+      (ngSubmit)="onSubmitEditCategory()"
+    >
+      <c-modal-header
+        ><h4 cModalTitle>
+          Edit category <strong>{{ selectedCategory.name }}</strong>
+        </h4></c-modal-header
+      ><c-modal-body
+        ><c-row class="mb-3"
+          ><label cCol cLabel for="categoryName">Category name</label
+          ><c-col
+            ><input
+              [valid]="
+                formEditCategory.get('categoryName').touched &&
+                formEditCategory.get('categoryName').valid
+                  ? true
+                  : formEditCategory.get('categoryName').touched &&
+                    formEditCategory.get('categoryName').invalid
+                  ? false
+                  : undefined
+              "
+              autocomplete="off"
+              cFormControl
+              id="categoryName"
+              type="text"
+              formControlName="categoryName"
+            /><c-form-feedback
+              class="text-end"
+              *ngIf="formEditCategory.get('categoryName').invalid"
+              [valid]="!formEditCategory.get('categoryName').invalid"
+              ><ng-container
+                *ngIf="
+                  formEditCategory.get('categoryName').touched &&
+                  formEditCategory.get('categoryName').invalid
+                "
+                ><div
+                  *ngIf="
+                    formEditCategory.get('categoryName').errors['required']
+                  "
+                >
+                  Category name is required
+                </div>
+                <div
+                  *ngIf="
+                    formEditCategory.get('categoryName').errors['minlength'] &&
+                    formEditCategory.get('categoryName').errors['minlength'][
+                      'requiredLength'
+                    ]
+                  "
+                >
+                  Category name must be at least
+                  {{
+                    formEditCategory.get("categoryName").errors["minlength"][
+                      "requiredLength"
+                    ]
+                  }}
+                  characters long
+                </div></ng-container
+              ></c-form-feedback
+            ></c-col
+          ></c-row
+        ><c-row
+          ><c-col class="d-flex align-items-center justify-content-center"
+            ><img
+              class="w-50 mb-3"
+              *ngIf="imagePreview"
+              [src]="imagePreview" /></c-col
+          ><input
+            style="display: none"
+            type="file"
+            (change)="onFileUpload($event)"
+            #fileInput
+          /><button
+            class="d-flex align-items-center justify-content-center"
+            cButton
+            variant="outline"
+            color="info"
+            (click)="triggerClick()"
+            [disabled]="formEditCategory.disabled"
+          >
+            <svg cIcon name="cil-cloud-upload" size="lg" class="me-2"></svg>
+            Upload image
+          </button></c-row
+        ></c-modal-body
+      ><c-modal-footer
+        ><button
+          cButton
+          [disabled]="formEditCategory.invalid || formEditCategory.disabled"
+          color="primary"
+          variant="outline"
+          type="submit"
+          size="sm"
+          class="mb-3 d-flex align-items-center justify-content-center"
+        >
+          <svg cIcon name="cil-save" size="lg" class="me-2"></svg>
+          Save
+        </button>
+        <button
+          (click)="toggleModalEditCategory()"
+          cButton
+          color="secondary"
+          variant="outline"
+          size="sm"
+          class="mb-3 d-flex align-items-center justify-content-center"
+        >
+          <svg cIcon name="cil-x-circle" size="lg" class="me-2"></svg>
+          Cancel
+        </button>
+      </c-modal-footer>
+    </form>
   </div></c-modal
 >
