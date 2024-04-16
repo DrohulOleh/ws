@@ -10,6 +10,7 @@ import { Observable, switchMap, map, Subscription } from 'rxjs';
 import { EUserRoles, ICategory, IProduct } from '../../shared/classes/types';
 import { ProductService } from '../../shared/services/product.service';
 import {
+  ButtonGroupModule,
   ButtonModule,
   CardModule,
   FormModule,
@@ -45,12 +46,15 @@ import { AuthService } from '../../shared/services/auth.service';
     RouterLink,
     SpinnerModule,
     ModalModule,
+    ButtonGroupModule,
   ],
   templateUrl: './product-page.component.html',
 })
 export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('modalEditCategory') modalEditCategoryRef!: ElementRef;
+  @ViewChild('modalEditProduct') modalEditProductRef!: ElementRef;
   @ViewChild('fileInput') fileInputRef!: ElementRef;
+  @ViewChild('imageInput') imageInputRef!: ElementRef;
 
   categories$!: Observable<ICategory[]>;
   productsAll: IProduct[] = [];
@@ -58,18 +62,24 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedCategoryId = '';
   selectedCategoryName = '';
   selectedCategory!: ICategory;
+  selectedProduct!: IProduct;
   currentUserId = this.authService.getUserPayload()?.userId;
   currentUserIsAdmin =
     this.authService.getUserPayload()?.role === EUserRoles.admin ? true : false;
 
   modalEditCategoryVisible = false;
   modalEditProductVisible = false;
+  blockAddCategoryVisible = false;
 
   formEditCategory: FormGroup | any;
-  formCreateProduct: FormGroup | any;
+  formAddCategory: FormGroup | any;
+  formEditProduct: FormGroup | any;
   editCategorySubscription!: Subscription | any;
   image!: File;
   imagePreview: any = '';
+  imageCategoryAdd!: File;
+  imageCategoryAddPreview: any = '';
+  noImage: any = 'uploads/no_image.png';
 
   productSubscription!: Subscription;
 
@@ -194,7 +204,30 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addProduct() {
-    console.log('addProduct');
+    this.imagePreview = '';
+
+    this.formEditProduct = new FormGroup({
+      productName: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      productCost: new FormControl(null, [Validators.required]),
+      productUnit: new FormControl(null, [Validators.required]),
+      productDescription: new FormControl(null, [Validators.required]),
+    });
+
+    this.formAddCategory = new FormGroup({
+      categoryName: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+    });
+
+    this.toggleModalEditProduct();
+  }
+
+  deleteProduct(productId: string) {
+    console.log('deleteProduct', productId);
   }
 
   textTruncate(product: any) {
@@ -203,6 +236,16 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   toggleModalEditCategory() {
     this.modalEditCategoryVisible = !this.modalEditCategoryVisible;
+  }
+
+  toggleModalEditProduct() {
+    this.modalEditProductVisible = !this.modalEditProductVisible;
+  }
+
+  toggleAddCategoryBlock() {
+    this.blockAddCategoryVisible = !this.blockAddCategoryVisible;
+    this.formAddCategory.reset();
+    this.imageCategoryAddPreview = '';
   }
 
   onSubmitEditCategory() {
@@ -232,6 +275,32 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  onSubmitAddCategory() {
+    let obs$;
+
+    this.formAddCategory.disable();
+
+    obs$ = this.productService
+      .createCategory(
+        this.formAddCategory.value.categoryName,
+        this.imageCategoryAdd
+      )
+      .subscribe({
+        next: () => {
+          console.log('added');
+          this.toggleAddCategoryBlock();
+          this.formAddCategory.enable();
+          this.categories$ = this.productService.fetchCategories();
+        },
+        error: (err) => {
+          console.log(err.error.message);
+          this.formAddCategory.enable();
+        },
+      });
+  }
+
+  onSubmitEditProduct() {}
+
   onFileUpload(event: any) {
     const file = event.target.files[0];
     this.image = file;
@@ -245,11 +314,31 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
     reader.readAsDataURL(file);
   }
 
+  onFileUploadCategoryAdd(event: any) {
+    const file = event.target.files[0];
+    this.imageCategoryAdd = file;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.imageCategoryAddPreview = reader.result;
+    };
+
+    reader.readAsDataURL(file);
+    console.log(this.imageCategoryAddPreview);
+  }
+
   triggerClick() {
     this.fileInputRef.nativeElement.click();
   }
 
+  triggerAddCategoryImageClick() {
+    this.imageInputRef.nativeElement.click();
+  }
+
   ngOnDestroy(): void {
     if (this.productSubscription) this.productSubscription.unsubscribe();
+    if (this.editCategorySubscription)
+      this.editCategorySubscription.unsubscribe();
   }
 }

@@ -42,7 +42,10 @@
             (click)="showProductsByCategory(category._id, category.name)"
             style="cursor: pointer"
           >
-            <img cCardImg="top" [src]="category.imageSrc" />
+            <img
+              cCardImg="top"
+              [src]="category.imageSrc ? category.imageSrc : noImage"
+            />
             <c-card-body>
               <h2 cCardTitle>{{ category.name }}</h2>
             </c-card-body>
@@ -141,13 +144,22 @@
               [md]="1"
               class="align-items-center d-flex flex-column justify-content-center"
               ><button
+                class="mb-1 w-100"
                 cButton
                 size="sm"
                 color="dark"
                 (click)="editProduct(product._id ? product._id : '')"
               >
                 <svg cIcon name="cil-pencil" size="lg" class="me-2"></svg>
-                Edit product
+                Edit</button
+              ><button
+                class="w-100"
+                cButton
+                size="sm"
+                color="danger"
+                (click)="deleteProduct(product._id ? product._id : '')"
+              >
+                <svg cIcon name="cil-trash" size="lg" class="me-2"></svg>Delete
               </button></c-col
             ><c-col
               *ngIf="!currentUserIsAdmin"
@@ -177,10 +189,19 @@
       </ng-container>
       <ng-container
         *ngIf="!productsInCategories || productsInCategories.length === 0"
-        ><a href="javascript:void(0);" (click)="returnToCategories()"
-          >Back to categories</a
+        ><span
+          ><h3>{{ categoryName }}</h3></span
+        ><button
+          cButton
+          class="mb-3 d-flex align-items-center justify-content-center"
+          color="dark"
+          variant="ghost"
+          (click)="returnToCategories()"
         >
-        <p>No products available for this category.</p>
+          <svg cIcon name="cil-arrow-circle-left" size="lg" class="me-2"></svg>
+          Back to categories
+        </button>
+        <h4>No products available for this category.</h4>
       </ng-container>
     </div>
   </ng-template>
@@ -223,13 +244,22 @@
               [md]="1"
               class="align-items-center d-flex flex-column justify-content-center"
               ><button
+                class="mb-1 w-100"
                 cButton
                 size="sm"
                 color="dark"
                 (click)="editProduct(product._id ? product._id : '')"
               >
                 <svg cIcon name="cil-pencil" size="lg" class="me-2"></svg>
-                Edit product
+                Edit</button
+              ><button
+                class="w-100"
+                cButton
+                size="sm"
+                color="danger"
+                (click)="deleteProduct(product._id ? product._id : '')"
+              >
+                <svg cIcon name="cil-trash" size="lg" class="me-2"></svg>Delete
               </button></c-col
             ><c-col
               *ngIf="!currentUserIsAdmin"
@@ -349,6 +379,7 @@
               [src]="imagePreview" /></c-col
           ><input
             style="display: none"
+            accept="image/png, image/jpeg"
             type="file"
             (change)="onFileUpload($event)"
             #fileInput
@@ -389,6 +420,275 @@
           Cancel
         </button>
       </c-modal-footer>
+    </form>
+  </div></c-modal
+>
+
+<c-modal
+  [visible]="modalEditProductVisible"
+  (visibleChange)="modalEditProductVisible = $event"
+  backdrop="static"
+  size="lg"
+  id="modalEditProduct"
+  #modalEditProduct
+  ><div *ngIf="formEditProduct">
+    <form
+      cForm
+      novalidate
+      [formGroup]="formEditProduct"
+      (ngSubmit)="onSubmitEditProduct()"
+    >
+      <c-modal-header><h4 cModalTitle>New product</h4></c-modal-header>
+      <c-modal-body
+        ><c-row
+          ><c-col
+            ><c-row
+              ><img
+                class="w-100 mb-3"
+                *ngIf="imagePreview"
+                [src]="imagePreview" /></c-row
+            ><c-row
+              ><input
+                style="display: none"
+                accept="image/png, image/jpeg"
+                type="file"
+                (change)="onFileUpload($event)"
+                #fileInput
+              /><button
+                class="d-flex align-items-center justify-content-center"
+                cButton
+                variant="outline"
+                color="info"
+                (click)="triggerClick()"
+                [disabled]="formEditProduct.disabled"
+              >
+                <svg cIcon name="cil-cloud-upload" size="lg" class="me-2"></svg>
+                Upload image
+              </button></c-row
+            ></c-col
+          ><c-col
+            ><label for="productName" class="mt-2">Product name</label
+            ><input
+              [valid]="
+                formEditProduct.get('productName').touched &&
+                formEditProduct.get('productName').valid
+                  ? true
+                  : formEditProduct.get('productName').touched &&
+                    formEditProduct.get('productName').invalid
+                  ? false
+                  : undefined
+              "
+              autocomplete="off"
+              cFormControl
+              id="productName"
+              type="text"
+              formControlName="productName"
+            /><label for="productUnit" class="mt-2">Unit of measurement</label
+            ><input
+              [valid]="
+                formEditProduct.get('productUnit').touched &&
+                formEditProduct.get('productUnit').valid
+                  ? true
+                  : formEditProduct.get('productUnit').touched &&
+                    formEditProduct.get('productUnit').invalid
+                  ? false
+                  : undefined
+              "
+              autocomplete="off"
+              cFormControl
+              id="productUnit"
+              type="text"
+              formControlName="productUnit"
+            /><label for="productCost" class="mt-2">Cost, &euro;</label
+            ><input
+              [valid]="
+                formEditProduct.get('productCost').touched &&
+                formEditProduct.get('productCost').valid
+                  ? true
+                  : formEditProduct.get('productCost').touched &&
+                    formEditProduct.get('productCost').invalid
+                  ? false
+                  : undefined
+              "
+              autocomplete="off"
+              cFormControl
+              id="productCost"
+              type="number"
+              formControlName="productCost"
+            /><label for="productDescription" class="mt-2">Description</label
+            ><textarea
+              [valid]="
+                formEditProduct.get('productDescription').touched &&
+                formEditProduct.get('productDescription').valid
+                  ? true
+                  : formEditProduct.get('productDescription').touched &&
+                    formEditProduct.get('productDescription').invalid
+                  ? false
+                  : undefined
+              "
+              autocomplete="off"
+              cFormControl
+              id="productDescription"
+              type="text"
+              rows="3"
+              formControlName="productDescription"
+            ></textarea></c-col></c-row
+        ><c-row class="mt-3"
+          ><c-col class="w-50"
+            ><c-row *ngIf="categories$ | async as categories"
+              ><label>Category</label
+              ><c-button-group
+                *ngIf="categories.length !== 0"
+                class="form-check-inline blockAddCategory flex-wrap"
+              >
+                <div *ngFor="let category of categories">
+                  <input
+                    class="btn-check"
+                    type="radio"
+                    id="{{ category._id }}"
+                    name="category"
+                    value="{{ category._id }}"
+                  />
+                  <label
+                    cButton
+                    variant="outline"
+                    size="sm"
+                    for="{{ category._id }}"
+                    class="ms-2 mb-2"
+                    >{{ category.name }}</label
+                  >
+                </div>
+              </c-button-group></c-row
+            ></c-col
+          ><c-col
+            ><div
+              *ngIf="!blockAddCategoryVisible"
+              class="d-flex justify-content-end align-items-center"
+            >
+              <button
+                cButton
+                variant="outline"
+                color="info"
+                size="sm"
+                (click)="toggleAddCategoryBlock()"
+              >
+                <svg cIcon name="cil-playlist-add" size="sm" class="me-2"></svg>
+                Add category
+              </button>
+            </div>
+            <div *ngIf="blockAddCategoryVisible" class="blockAddCategory">
+              <form cForm novalidate [formGroup]="formAddCategory">
+                <c-row
+                  ><c-col
+                    ><label sizing="sm" for="categoryName">Category name</label
+                    ><input
+                      [valid]="
+                        formAddCategory.get('categoryName').touched &&
+                        formAddCategory.get('categoryName').valid
+                          ? true
+                          : formAddCategory.get('categoryName').touched &&
+                            formAddCategory.get('categoryName').invalid
+                          ? false
+                          : undefined
+                      "
+                      autocomplete="off"
+                      cFormControl
+                      id="categoryName"
+                      type="text"
+                      sizing="sm"
+                      formControlName="categoryName"
+                      class="mb-1"
+                    /><input
+                      style="display: none"
+                      accept="image/png, image/jpeg"
+                      type="file"
+                      (change)="onFileUploadCategoryAdd($event)"
+                      #imageInput
+                    /><button
+                      class="d-flex align-items-center justify-content-center"
+                      cButton
+                      variant="outline"
+                      color="info"
+                      size="sm"
+                      (click)="triggerAddCategoryImageClick()"
+                      [disabled]="formAddCategory.disabled"
+                    >
+                      <svg
+                        cIcon
+                        name="cil-cloud-upload"
+                        size="sm"
+                        class="me-1"
+                      ></svg>
+                      Upload image
+                    </button></c-col
+                  ><c-col
+                    ><img
+                      class="w-100"
+                      *ngIf="imageCategoryAddPreview"
+                      [src]="imageCategoryAddPreview" /></c-col></c-row
+                ><c-row
+                  class="mt-3 d-flex align-items-end justify-content-center"
+                  ><c-col class="d-flex align-items-end justify-content-end"
+                    ><button
+                      cButton
+                      [disabled]="
+                        formAddCategory.disabled || formAddCategory.invalid
+                      "
+                      variant="outline"
+                      size="sm"
+                      color="primary"
+                      class="me-2"
+                      (click)="onSubmitAddCategory()"
+                    >
+                      <svg cIcon name="cil-save" size="sm" class="me-1"></svg>
+                      Save</button
+                    ><button
+                      cButton
+                      variant="outline"
+                      size="sm"
+                      color="secondary"
+                      (click)="toggleAddCategoryBlock()"
+                    >
+                      <svg
+                        cIcon
+                        name="cil-x-circle"
+                        size="sm"
+                        class="me-1"
+                      ></svg>
+                      Cancel
+                    </button></c-col
+                  ></c-row
+                >
+              </form>
+            </div></c-col
+          ></c-row
+        ></c-modal-body
+      >
+      <c-modal-footer
+        ><button
+          cButton
+          [disabled]="formEditProduct.invalid || formEditProduct.disabled"
+          color="primary"
+          variant="outline"
+          type="submit"
+          size="sm"
+          class="mb-3 d-flex align-items-center justify-content-center"
+        >
+          <svg cIcon name="cil-save" size="lg" class="me-2"></svg>
+          Save
+        </button>
+        <button
+          (click)="toggleModalEditProduct()"
+          cButton
+          color="secondary"
+          variant="outline"
+          size="sm"
+          class="mb-3 d-flex align-items-center justify-content-center"
+        >
+          <svg cIcon name="cil-x-circle" size="lg" class="me-2"></svg>
+          Cancel
+        </button></c-modal-footer
+      >
     </form>
   </div></c-modal
 >

@@ -57,6 +57,7 @@
   pointer-events: none;
   cursor: default;
 }
+
 .minusQty {
   color: rgba(44, 56, 74, 0.95);
 }
@@ -83,4 +84,15 @@
 .plusQty.disabled {
   pointer-events: none;
   cursor: default;
+}
+
+.blockAddCategory {
+  padding: $input-padding-y $input-padding-x;
+  border: $input-border-width solid
+    var(--#{$prefix}input-border-color, $input-border-color);
+
+  @include border-radius($input-border-radius, 0);
+
+  @include box-shadow($input-box-shadow);
+  @include transition($input-transition);
 }
