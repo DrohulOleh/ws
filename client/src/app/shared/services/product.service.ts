@@ -55,8 +55,20 @@ export class ProductService {
     return this.http.get<IProduct[]>(`/api/product/${categoryId}`);
   }
 
-  createProduct(product: IProduct): Observable<IProduct> {
-    return this.http.post<IProduct>('/api/product', product);
+  createProduct(product: IProduct, image?: File): Observable<IProduct> {
+    const fd = new FormData();
+
+    if (image) {
+      fd.append('image', image, image.name);
+    }
+
+    fd.append('name', product.name);
+    fd.append('cost', product.cost.toString());
+    fd.append('category', product.category.toString());
+    if (product.description) fd.append('description', product.description);
+    if (product.unit) fd.append('unit', product.unit);
+
+    return this.http.post<IProduct>('/api/product', fd);
   }
 
   updateProduct(product: IProduct): Observable<IProduct> {

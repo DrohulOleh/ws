@@ -66,7 +66,7 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     });
 
-    console.log(this.currentUserIsAdmin);
+   // console.log(this.currentUserIsAdmin);
   }
 
   ngAfterViewInit(): void {}

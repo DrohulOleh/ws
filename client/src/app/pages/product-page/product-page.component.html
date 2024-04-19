@@ -439,22 +439,33 @@
       (ngSubmit)="onSubmitEditProduct()"
     >
       <c-modal-header><h4 cModalTitle>New product</h4></c-modal-header>
-      <c-modal-body
-        ><c-row
-          ><c-col
-            ><c-row
-              ><img
+      <!-- display: block -->
+      <c-modal-body>
+        <!-- display: block -->
+        <c-row>
+          <!-- display: block -->
+          <c-col>
+            <!-- display: block -->
+            <c-row>
+              <!-- display: block -->
+              <img
                 class="w-100 mb-3"
                 *ngIf="imagePreview"
-                [src]="imagePreview" /></c-row
-            ><c-row
-              ><input
+                [src]="imagePreview"
+              />
+            </c-row>
+            <!-- display: block -->
+            <c-row>
+              <!-- display: block -->
+              <input
                 style="display: none"
                 accept="image/png, image/jpeg"
                 type="file"
                 (change)="onFileUpload($event)"
                 #fileInput
-              /><button
+              />
+              <!-- display: block -->
+              <button
                 class="d-flex align-items-center justify-content-center"
                 cButton
                 variant="outline"
@@ -464,11 +475,15 @@
               >
                 <svg cIcon name="cil-cloud-upload" size="lg" class="me-2"></svg>
                 Upload image
-              </button></c-row
-            ></c-col
-          ><c-col
-            ><label for="productName" class="mt-2">Product name</label
-            ><input
+              </button>
+            </c-row>
+          </c-col>
+          <!-- display: block -->
+          <c-col>
+            <!-- display: block -->
+            <label for="productName" class="mt-2">Product name</label>
+            <!-- display: block -->
+            <input
               [valid]="
                 formEditProduct.get('productName').touched &&
                 formEditProduct.get('productName').valid
@@ -483,8 +498,47 @@
               id="productName"
               type="text"
               formControlName="productName"
-            /><label for="productUnit" class="mt-2">Unit of measurement</label
-            ><input
+            />
+            <!-- display: block -->
+            <c-form-feedback
+              class="text-end"
+              *ngIf="formEditProduct.get('productName').invalid"
+              [valid]="!formEditProduct.get('productName').invalid"
+            >
+              <!-- display: block -->
+              <ng-container
+                *ngIf="
+                  formEditProduct.get('productName').touched &&
+                  formEditProduct.get('productName').invalid
+                "
+              >
+                <!-- display: block -->
+                <div
+                  *ngIf="formEditProduct.get('productName').errors['required']"
+                >
+                  Product name is required
+                </div>
+                <!-- display: block -->
+                <div
+                  *ngIf="
+                    formEditProduct.get('productName').errors['minlength'] &&
+                    formEditProduct.get('productName').errors['minlength'][
+                      'requiredLength'
+                    ]
+                  "
+                >
+                  Product name must be at least
+                  {{
+                    formEditProduct.get("productName").errors["minlength"][
+                      "requiredLength"
+                    ]
+                  }}
+                  characters long
+                </div>
+              </ng-container>
+            </c-form-feedback>
+            <label for="productUnit" class="mt-2">Unit of measurement</label>
+            <input
               [valid]="
                 formEditProduct.get('productUnit').touched &&
                 formEditProduct.get('productUnit').valid
@@ -499,8 +553,31 @@
               id="productUnit"
               type="text"
               formControlName="productUnit"
-            /><label for="productCost" class="mt-2">Cost, &euro;</label
-            ><input
+            />
+            <!-- display: block -->
+            <c-form-feedback
+              class="text-end"
+              *ngIf="formEditProduct.get('productUnit').invalid"
+              [valid]="!formEditProduct.get('productUnit').invalid"
+            >
+              <!-- display: block -->
+              <ng-container
+                *ngIf="
+                  formEditProduct.get('productUnit').touched &&
+                  formEditProduct.get('productUnit').invalid
+                "
+              >
+                <!-- display: block -->
+                <div
+                  *ngIf="formEditProduct.get('productUnit').errors['required']"
+                >
+                  Product unit of measurement is required
+                </div>
+              </ng-container>
+            </c-form-feedback>
+            <label for="productCost" class="mt-2">Cost, &euro;</label>
+            <!-- display: block -->
+            <input
               [valid]="
                 formEditProduct.get('productCost').touched &&
                 formEditProduct.get('productCost').valid
@@ -514,9 +591,38 @@
               cFormControl
               id="productCost"
               type="number"
+              min="0.01"
+              step="0.01"
               formControlName="productCost"
-            /><label for="productDescription" class="mt-2">Description</label
-            ><textarea
+            />
+            <c-form-feedback
+              class="text-end"
+              *ngIf="formEditProduct.get('productCost').invalid"
+              [valid]="!formEditProduct.get('productCost').invalid"
+            >
+              <!-- display: block -->
+              <ng-container
+                *ngIf="
+                  formEditProduct.get('productCost').touched &&
+                  formEditProduct.get('productCost').invalid
+                "
+              >
+                <!-- display: block -->
+                <div
+                  *ngIf="formEditProduct.get('productCost').errors['required']"
+                >
+                  Product cost is required
+                </div>
+                <div *ngIf="formEditProduct.get('productCost').errors['min']">
+                  The cost of the product must be non-negative and a multiple of
+                  1 cent
+                </div>
+              </ng-container>
+            </c-form-feedback>
+            <!-- display: block -->
+            <label for="productDescription" class="mt-2">Description</label>
+            <!-- display: block -->
+            <textarea
               [valid]="
                 formEditProduct.get('productDescription').touched &&
                 formEditProduct.get('productDescription').valid
@@ -532,36 +638,105 @@
               type="text"
               rows="3"
               formControlName="productDescription"
-            ></textarea></c-col></c-row
-        ><c-row class="mt-3"
-          ><c-col class="w-50"
-            ><c-row *ngIf="categories$ | async as categories"
-              ><label>Category</label
-              ><c-button-group
+            ></textarea>
+            <!-- display: block -->
+            <c-form-feedback
+              class="text-end"
+              *ngIf="formEditProduct.get('productDescription').invalid"
+              [valid]="!formEditProduct.get('productDescription').invalid"
+            >
+              <!-- display: block -->
+              <ng-container
+                *ngIf="
+                  formEditProduct.get('productDescription').touched &&
+                  formEditProduct.get('productDescription').invalid
+                "
+              >
+                <!-- display: block -->
+                <div
+                  *ngIf="
+                    formEditProduct.get('productDescription').errors['required']
+                  "
+                >
+                  Product description is required
+                </div>
+              </ng-container>
+            </c-form-feedback>
+          </c-col>
+        </c-row>
+        <!-- display: block -->
+        <c-row class="mt-3">
+          <!-- display: block -->
+          <c-col class="w-50">
+            <!-- display: block -->
+            <c-row *ngIf="categories$ | async as categories">
+              <!-- display: block -->
+              <label>Category</label>
+              <!-- display: block -->
+              <c-button-group
                 *ngIf="categories.length !== 0"
                 class="form-check-inline blockAddCategory flex-wrap"
               >
+                <!-- display: block -->
                 <div *ngFor="let category of categories">
+                  <!-- display: block -->
                   <input
+                    [valid]="
+                      formEditProduct.get('productCategory').touched &&
+                      formEditProduct.get('productCategory').valid
+                        ? true
+                        : formEditProduct.get('productCategory').touched &&
+                          formEditProduct.get('productCategory').invalid
+                        ? false
+                        : undefined
+                    "
+                    cFormCheckInput
                     class="btn-check"
                     type="radio"
                     id="{{ category._id }}"
-                    name="category"
                     value="{{ category._id }}"
+                    formControlName="productCategory"
                   />
+                  <!-- display: block -->
                   <label
                     cButton
                     variant="outline"
                     size="sm"
                     for="{{ category._id }}"
-                    class="ms-2 mb-2"
-                    >{{ category.name }}</label
+                    class="m-1"
                   >
+                    {{ category.name }}
+                  </label>
+                  <!-- display: block -->
                 </div>
-              </c-button-group></c-row
-            ></c-col
-          ><c-col
-            ><div
+              </c-button-group>
+              <c-form-feedback
+                class="text-end"
+                *ngIf="formEditProduct.get('productCategory').invalid"
+                [valid]="!formEditProduct.get('productCategory').invalid"
+              >
+                <!-- display: block -->
+                <ng-container
+                  *ngIf="
+                    formEditProduct.get('productCategory').touched &&
+                    formEditProduct.get('productCategory').invalid
+                  "
+                >
+                  <!-- display: block -->
+                  <div
+                    *ngIf="
+                      formEditProduct.get('productCategory').errors['required']
+                    "
+                  >
+                    Product category is required
+                  </div>
+                </ng-container>
+              </c-form-feedback>
+            </c-row>
+          </c-col>
+          <!-- display: block -->
+          <c-col>
+            <div
               *ngIf="!blockAddCategoryVisible"
               class="d-flex justify-content-end align-items-center"
             >
@@ -578,10 +753,14 @@
             </div>
             <div *ngIf="blockAddCategoryVisible" class="blockAddCategory">
               <form cForm novalidate [formGroup]="formAddCategory">
-                <c-row
-                  ><c-col
-                    ><label sizing="sm" for="categoryName">Category name</label
-                    ><input
+                <!-- display: block -->
+                <c-row>
+                  <!-- display: block -->
+                  <c-col>
+                    <!-- display: block -->
+                    <label sizing="sm" for="categoryName">Category name</label>
+                    <!-- display: block -->
+                    <input
                       [valid]="
                         formAddCategory.get('categoryName').touched &&
                         formAddCategory.get('categoryName').valid
@@ -598,13 +777,17 @@
                       sizing="sm"
                       formControlName="categoryName"
                       class="mb-1"
-                    /><input
+                    />
+                    <!-- display: block -->
+                    <input
                       style="display: none"
                       accept="image/png, image/jpeg"
                       type="file"
                       (change)="onFileUploadCategoryAdd($event)"
                       #imageInput
-                    /><button
+                    />
+                    <!-- display: block -->
+                    <button
                       class="d-flex align-items-center justify-content-center"
                       cButton
                       variant="outline"
@@ -613,6 +796,7 @@
                       (click)="triggerAddCategoryImageClick()"
                       [disabled]="formAddCategory.disabled"
                     >
+                      <!-- display: block -->
                       <svg
                         cIcon
                         name="cil-cloud-upload"
@@ -620,16 +804,25 @@
                         class="me-1"
                       ></svg>
                       Upload image
-                    </button></c-col
-                  ><c-col
-                    ><img
+                    </button>
+                  </c-col>
+                  <!-- display: block -->
+                  <c-col>
+                    <!-- display: block -->
+                    <img
                       class="w-100"
                       *ngIf="imageCategoryAddPreview"
-                      [src]="imageCategoryAddPreview" /></c-col></c-row
-                ><c-row
+                      [src]="imageCategoryAddPreview"
+                    />
+                  </c-col>
+                </c-row>
+                <!-- display: block -->
+                <c-row
                   class="mt-3 d-flex align-items-end justify-content-center"
-                  ><c-col class="d-flex align-items-end justify-content-end"
-                    ><button
+                >
+                  <!-- display: block -->
+                  <c-col class="d-flex align-items-end justify-content-end">
+                    <button
                       cButton
                       [disabled]="
                         formAddCategory.disabled || formAddCategory.invalid
@@ -640,15 +833,18 @@
                       class="me-2"
                       (click)="onSubmitAddCategory()"
                     >
+                      <!-- display: block -->
                       <svg cIcon name="cil-save" size="sm" class="me-1"></svg>
                       Save</button
-                    ><button
+                    ><!-- display: block -->
+                    <button
                       cButton
                       variant="outline"
                       size="sm"
                       color="secondary"
                       (click)="toggleAddCategoryBlock()"
                     >
+                      <!-- display: block -->
                       <svg
                         cIcon
                         name="cil-x-circle"
@@ -656,16 +852,17 @@
                         class="me-1"
                       ></svg>
                       Cancel
-                    </button></c-col
-                  ></c-row
-                >
+                    </button>
+                  </c-col>
+                </c-row>
               </form>
-            </div></c-col
-          ></c-row
-        ></c-modal-body
-      >
+            </div>
+          </c-col>
+        </c-row>
+      </c-modal-body>
       <c-modal-footer
         ><button
+          (click)="onSubmitAddProduct()"
           cButton
           [disabled]="formEditProduct.invalid || formEditProduct.disabled"
           color="primary"

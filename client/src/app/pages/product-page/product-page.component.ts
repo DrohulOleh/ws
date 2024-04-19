@@ -211,9 +211,13 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
         Validators.required,
         Validators.minLength(3),
       ]),
-      productCost: new FormControl(null, [Validators.required]),
+      productCost: new FormControl(null, [
+        Validators.required,
+        Validators.min(0.01),
+      ]),
       productUnit: new FormControl(null, [Validators.required]),
       productDescription: new FormControl(null, [Validators.required]),
+      productCategory: new FormControl(null, [Validators.required]),
     });
 
     this.formAddCategory = new FormGroup({
@@ -299,6 +303,42 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  onSubmitAddProduct() {
+    this.formEditProduct.disable();
+
+    const newProduct: IProduct = {
+      category: this.formEditProduct.value.productCategory,
+      cost: this.formEditProduct.value.productCost,
+      description: this.formEditProduct.value.productDescription,
+      //imageSrc: this.imagePreview,
+      isDescriptionTrancated: false,
+      name: this.formEditProduct.value.productName,
+      unit: this.formEditProduct.value.productUnit,
+    };
+
+    this.productService.createProduct(newProduct, this.image).subscribe({
+      next: (product) => {
+        this.productsAll.push(product);
+        //console.log('added');
+        this.formEditProduct.enable();
+        this.toggleModalEditProduct();
+        //this.categories$ = this.productService.fetchCategories();
+
+        /* if (this.showCategoriesTEMPLATE) {
+          this.returnToCategories();
+        } else {
+          this.showProductsAll();
+        } */
+
+        this.returnToCategories();
+      },
+      error: (err) => {
+        console.log(err);
+        this.formEditProduct.enable();
+      },
+    });
+  }
+
   onSubmitEditProduct() {}
 
   onFileUpload(event: any) {
@@ -312,6 +352,7 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     reader.readAsDataURL(file);
+    //console.log(file);
   }
 
   onFileUploadCategoryAdd(event: any) {
