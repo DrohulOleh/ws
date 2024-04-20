@@ -49,7 +49,7 @@ export interface IProduct {
   name: string;
   quantity?: number;
   unit?: string;
-  isDescriptionTrancated: boolean;
+  isDescriptionTrancated?: boolean;
 }
 
 export interface ICart {

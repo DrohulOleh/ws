@@ -113,7 +113,11 @@
         <c-card class="mb-3 w-100" *ngFor="let product of productsInCategories">
           <c-row class="g-0">
             <c-col [md]="2">
-              <img [cCardImg] [src]="product.imageSrc" [alt]="product.name" />
+              <img
+                [cCardImg]
+                [src]="product.imageSrc ? product.imageSrc : noImage"
+                [alt]="product.name"
+              />
             </c-col>
             <c-card-body cCol [md]="8">
               <h5 cCardTitle>{{ product.name }}</h5>
@@ -157,7 +161,7 @@
                 cButton
                 size="sm"
                 color="danger"
-                (click)="deleteProduct(product._id ? product._id : '')"
+                (click)="deleteProduct(product)"
               >
                 <svg cIcon name="cil-trash" size="lg" class="me-2"></svg>Delete
               </button></c-col
@@ -214,7 +218,11 @@
         <c-card class="mb-3 w-100" *ngFor="let product of productsAll">
           <c-row class="g-0">
             <c-col [md]="2">
-              <img [cCardImg] [src]="product.imageSrc" [alt]="product.name" />
+              <img
+                [cCardImg]
+                [src]="product.imageSrc ? product.imageSrc : noImage"
+                [alt]="product.name"
+              />
             </c-col>
             <c-card-body cCol [md]="8">
               <h5 cCardTitle>{{ product.name }}</h5>
@@ -257,7 +265,7 @@
                 cButton
                 size="sm"
                 color="danger"
-                (click)="deleteProduct(product._id ? product._id : '')"
+                (click)="deleteProduct(product)"
               >
                 <svg cIcon name="cil-trash" size="lg" class="me-2"></svg>Delete
               </button></c-col
@@ -436,7 +444,7 @@
       cForm
       novalidate
       [formGroup]="formEditProduct"
-      (ngSubmit)="onSubmitEditProduct()"
+      (ngSubmit)="onSubmitAddProduct()"
     >
       <c-modal-header><h4 cModalTitle>New product</h4></c-modal-header>
       <!-- display: block -->

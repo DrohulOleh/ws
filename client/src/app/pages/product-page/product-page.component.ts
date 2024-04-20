@@ -62,7 +62,7 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedCategoryId = '';
   selectedCategoryName = '';
   selectedCategory!: ICategory;
-  selectedProduct!: IProduct;
+  selectedProductId!: null | any;
   currentUserId = this.authService.getUserPayload()?.userId;
   currentUserIsAdmin =
     this.authService.getUserPayload()?.role === EUserRoles.admin ? true : false;
@@ -200,12 +200,48 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   editProduct(product: IProduct) {
+    this.imagePreview = '';
+    this.selectedProductId = product._id;
     console.log('editProduct', product);
-    
+
+    this.formEditProduct = new FormGroup({
+      productName: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+      productCost: new FormControl(null, [
+        Validators.required,
+        Validators.min(0.01),
+      ]),
+      productUnit: new FormControl(null, [Validators.required]),
+      productDescription: new FormControl(null, [Validators.required]),
+      productCategory: new FormControl(null, [Validators.required]),
+    });
+
+    this.formAddCategory = new FormGroup({
+      categoryName: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+      ]),
+    });
+
+    this.toggleModalEditProduct();
+
+    //this.formEditProduct.disable();
+
+    this.formEditProduct.patchValue({
+      productName: product.name,
+      productCost: product.cost,
+      productUnit: product.unit,
+      productDescription: product.description,
+      productCategory: product.category,
+    });
+    this.imagePreview = product.imageSrc;
   }
 
   addProduct() {
     this.imagePreview = '';
+    this.selectedProductId = null;
 
     this.formEditProduct = new FormGroup({
       productName: new FormControl(null, [
@@ -231,8 +267,28 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.toggleModalEditProduct();
   }
 
-  deleteProduct(productId: string) {
-    console.log('deleteProduct', productId);
+  deleteProduct(product: IProduct) {
+    const decision = window.confirm(
+      `Are you sure you want to delete the '${product.name}' product?`
+    );
+
+    if (decision) {
+      this.productSubscription = this.productService
+        .deleteProduct(product)
+        .subscribe({
+          next: (response) => {
+            const idx = this.productsAll.findIndex(
+              (p) => p._id === product._id
+            );
+            this.productsAll.splice(idx, 1);
+            console.log(response.message);
+            this.returnToCategories();
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+    }
   }
 
   textTruncate(product: any) {
@@ -311,36 +367,47 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
       category: this.formEditProduct.value.productCategory,
       cost: this.formEditProduct.value.productCost,
       description: this.formEditProduct.value.productDescription,
-      //imageSrc: this.imagePreview,
-      isDescriptionTrancated: false,
       name: this.formEditProduct.value.productName,
       unit: this.formEditProduct.value.productUnit,
     };
 
-    this.productService.createProduct(newProduct, this.image).subscribe({
-      next: (product) => {
-        this.productsAll.push(product);
-        //console.log('added');
-        this.formEditProduct.enable();
-        this.toggleModalEditProduct();
-        //this.categories$ = this.productService.fetchCategories();
+    if (this.selectedProductId) {
+      newProduct._id = this.selectedProductId;
 
-        /* if (this.showCategoriesTEMPLATE) {
-          this.returnToCategories();
-        } else {
-          this.showProductsAll();
-        } */
+      this.productSubscription = this.productService
+        .updateProduct(newProduct, this.image)
+        .subscribe({
+          next: (product) => {
+            const idx = this.productsAll.findIndex(
+              (p) => p._id === product._id
+            );
+            this.productsAll[idx] = product;
+            console.log('Cahanges saved');
+            this.formEditProduct.enable();
+            this.toggleModalEditProduct();
 
-        this.returnToCategories();
-      },
-      error: (err) => {
-        console.log(err);
-        this.formEditProduct.enable();
-      },
-    });
+            this.returnToCategories();
+          },
+        });
+    } else {
+      this.productSubscription = this.productService
+        .createProduct(newProduct, this.image)
+        .subscribe({
+          next: (product) => {
+            this.productsAll.push(product);
+
+            this.formEditProduct.enable();
+            this.toggleModalEditProduct();
+
+            this.returnToCategories();
+          },
+          error: (err) => {
+            console.log(err);
+            this.formEditProduct.enable();
+          },
+        });
+    }
   }
-
-  onSubmitEditProduct() {}
 
   onFileUpload(event: any) {
     const file = event.target.files[0];
