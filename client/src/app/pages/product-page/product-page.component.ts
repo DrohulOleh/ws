@@ -199,8 +199,9 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  editProduct(productId: string) {
-    console.log('editProduct', productId);
+  editProduct(product: IProduct) {
+    console.log('editProduct', product);
+    
   }
 
   addProduct() {
@@ -291,7 +292,7 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .subscribe({
         next: () => {
-          console.log('added');
+          //console.log('added');
           this.toggleAddCategoryBlock();
           this.formAddCategory.enable();
           this.categories$ = this.productService.fetchCategories();

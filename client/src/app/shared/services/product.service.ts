@@ -71,8 +71,20 @@ export class ProductService {
     return this.http.post<IProduct>('/api/product', fd);
   }
 
-  updateProduct(product: IProduct): Observable<IProduct> {
-    return this.http.patch<IProduct>(`/api/product/${product._id}`, product);
+  updateProduct(product: IProduct, image?: File): Observable<IProduct> {
+    const fd = new FormData();
+
+    if (image) {
+      fd.append('image', image, image.name);
+    }
+
+    fd.append('name', product.name);
+    fd.append('cost', product.cost.toString());
+    fd.append('category', product.category.toString());
+    if (product.description) fd.append('description', product.description);
+    if (product.unit) fd.append('unit', product.unit);
+
+    return this.http.patch<IProduct>(`/api/product/${product._id}`, fd);
   }
 
   deleteProduct(product: IProduct): Observable<IMessage> {
