@@ -53,7 +53,6 @@ export class SiteHeaderComponent extends HeaderComponent {
   currentUserId = this.auth.getUserPayload()?.userId;
   currentUserIsAdmin =
     this.auth.getUserPayload()?.role === EUserRoles.admin ? true : false;
-  //productListInCart= this.cart.getProductList(this.currentUserId);
 
   constructor(
     private auth: AuthService,

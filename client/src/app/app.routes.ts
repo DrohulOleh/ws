@@ -12,6 +12,7 @@ import { OverviewPageComponent } from './pages/overview-page/overview-page.compo
 import { ProductPageComponent } from './pages/product-page/product-page.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 
 export const routes: Routes = [
   {
@@ -33,7 +34,13 @@ export const routes: Routes = [
       { path: 'order', component: OrderPageComponent },
       { path: 'cart', component: CartPageComponent },
       { path: 'user', component: UserPageComponent },
+      // { path: 'profile/:id', component: ProfilePageComponent },
     ],
+  },
+  {
+    path: 'profile/:id',
+    component: ProfilePageComponent,
+    canActivate: [canActivate, canActivateChild],
   },
   { path: '**', component: NotfoundPageComponent },
 ];

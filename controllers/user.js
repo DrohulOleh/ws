@@ -70,6 +70,13 @@ module.exports.getAll = async function (req, res) {
   }
 };
 
+module.exports.getById = async function (req, res) {
+  try {
+  } catch (err) {
+    errorHandler(res, err);
+  }
+};
+
 module.exports.update = async function (req, res) {
   try {
   } catch (err) {

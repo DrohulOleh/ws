@@ -51,11 +51,13 @@ export class CartPageComponent implements OnInit, OnDestroy {
   plusQty(product: IProductList) {
     if (product.quantity !== undefined) product.quantity++;
     this.cartService.updateQuantity(product, this.currentUserId);
+    this.totalAmmount = this.cartService.totalAmmount;
   }
 
   minusQty(product: IProductList) {
     if (product.quantity !== undefined) product.quantity--;
     this.cartService.updateQuantity(product, this.currentUserId);
+    this.totalAmmount = this.cartService.totalAmmount;
   }
 
   ngOnDestroy(): void {

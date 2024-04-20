@@ -360,6 +360,32 @@ export class ProductPageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  onSubmitDeleteCategory() {
+    const decision = window.confirm(
+      `Are you sure you want to delete the '${this.selectedCategory.name}' category and all of its products?`
+    );
+
+    if (decision) {
+      this.formEditCategory.disable();
+      if (this.selectedCategory._id) {
+        this.productSubscription = this.productService
+          .deleteCategory(this.selectedCategory._id)
+          .subscribe({
+            next: (response) => console.log(response.message),
+            error: (err) => {
+              console.log(err);
+              this.formEditCategory.enable();
+            },
+            complete: () => {
+              this.formEditCategory.enable();
+              this.toggleModalEditCategory();
+              this.categories$ = this.productService.fetchCategories();
+            },
+          });
+      }
+    }
+  }
+
   onSubmitAddProduct() {
     this.formEditProduct.disable();
 

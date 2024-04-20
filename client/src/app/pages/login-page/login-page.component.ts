@@ -77,7 +77,14 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         if (this.authService.getUserPayload()?.role === EUserRoles.admin) {
           this.router.navigate(['/overview']);
         } else {
-          this.router.navigate(['/product']);
+          if (
+            this.authService.getUserPayload()?.isRegistrationComplete === true
+          ) {
+            this.router.navigate(['/product']);
+          } else {
+            this.router.navigate(['/product']);
+            //this.router.navigate([`/profile/${this.authService.getUserPayload()?.userId}`,]);
+          }
         }
       },
       error: (err) => {

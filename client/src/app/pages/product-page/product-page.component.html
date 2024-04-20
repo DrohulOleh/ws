@@ -308,28 +308,48 @@
   </div>
 </ng-template>
 
+<!-- display: block -->
 <c-modal
   [visible]="modalEditCategoryVisible"
   (visibleChange)="modalEditCategoryVisible = $event"
   backdrop="static"
   id="modalEditCategory"
   #modalEditCategory
-  ><div *ngIf="selectedCategory">
+>
+  <div *ngIf="selectedCategory">
     <form
       cForm
       novalidate
       [formGroup]="formEditCategory"
       (ngSubmit)="onSubmitEditCategory()"
     >
-      <c-modal-header
-        ><h4 cModalTitle>
+      <!-- display: block -->
+      <c-modal-header>
+        <h4 cModalTitle>
           Edit category <strong>{{ selectedCategory.name }}</strong>
-        </h4></c-modal-header
-      ><c-modal-body
-        ><c-row class="mb-3"
-          ><label cCol cLabel for="categoryName">Category name</label
-          ><c-col
-            ><input
+        </h4>
+        <button
+          cButton
+          color="danger"
+          variant="outline"
+          type="button"
+          size="sm"
+          class="mb-3 d-flex align-items-start justify-content-start"
+          (click)="onSubmitDeleteCategory()"
+        >
+          <svg cIcon name="cil-trash" size="lg" class="me-2"></svg>Delete
+        </button>
+      </c-modal-header>
+      <!-- display: block -->
+      <c-modal-body>
+        <!-- display: block -->
+        <c-row class="mb-3">
+          <!-- display: block -->
+          <label cCol cLabel for="categoryName">Category name</label>
+          <!-- display: block -->
+          <c-col>
+            <!-- display: block -->
+            <input
               [valid]="
                 formEditCategory.get('categoryName').touched &&
                 formEditCategory.get('categoryName').valid
@@ -344,16 +364,21 @@
               id="categoryName"
               type="text"
               formControlName="categoryName"
-            /><c-form-feedback
+            />
+            <!-- display: block -->
+            <c-form-feedback
               class="text-end"
               *ngIf="formEditCategory.get('categoryName').invalid"
               [valid]="!formEditCategory.get('categoryName').invalid"
-              ><ng-container
+            >
+              <!-- display: block -->
+              <ng-container
                 *ngIf="
                   formEditCategory.get('categoryName').touched &&
                   formEditCategory.get('categoryName').invalid
                 "
-                ><div
+              >
+                <div
                   *ngIf="
                     formEditCategory.get('categoryName').errors['required']
                   "
@@ -375,23 +400,27 @@
                     ]
                   }}
                   characters long
-                </div></ng-container
-              ></c-form-feedback
-            ></c-col
-          ></c-row
-        ><c-row
-          ><c-col class="d-flex align-items-center justify-content-center"
-            ><img
-              class="w-50 mb-3"
-              *ngIf="imagePreview"
-              [src]="imagePreview" /></c-col
-          ><input
+                </div>
+              </ng-container>
+            </c-form-feedback>
+          </c-col>
+        </c-row>
+        <!-- display: block -->
+        <c-row>
+          <!-- display: block -->
+          <c-col class="d-flex align-items-center justify-content-center">
+            <img class="w-50 mb-3" *ngIf="imagePreview" [src]="imagePreview" />
+          </c-col>
+          <!-- display: block -->
+          <input
             style="display: none"
             accept="image/png, image/jpeg"
             type="file"
             (change)="onFileUpload($event)"
             #fileInput
-          /><button
+          />
+          <!-- display: block -->
+          <button
             class="d-flex align-items-center justify-content-center"
             cButton
             variant="outline"
@@ -401,10 +430,12 @@
           >
             <svg cIcon name="cil-cloud-upload" size="lg" class="me-2"></svg>
             Upload image
-          </button></c-row
-        ></c-modal-body
-      ><c-modal-footer
-        ><button
+          </button>
+        </c-row>
+      </c-modal-body>
+      <!-- display: block -->
+      <c-modal-footer>
+        <button
           cButton
           [disabled]="formEditCategory.invalid || formEditCategory.disabled"
           color="primary"
@@ -429,8 +460,8 @@
         </button>
       </c-modal-footer>
     </form>
-  </div></c-modal
->
+  </div>
+</c-modal>
 
 <c-modal
   [visible]="modalEditProductVisible"
@@ -439,13 +470,16 @@
   size="lg"
   id="modalEditProduct"
   #modalEditProduct
-  ><div *ngIf="formEditProduct">
+  ><!-- display: block -->
+  <div *ngIf="formEditProduct">
+    <!-- display: block -->
     <form
       cForm
       novalidate
       [formGroup]="formEditProduct"
       (ngSubmit)="onSubmitAddProduct()"
     >
+      <!-- display: block -->
       <c-modal-header><h4 cModalTitle>New product</h4></c-modal-header>
       <!-- display: block -->
       <c-modal-body>
