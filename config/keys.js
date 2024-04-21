@@ -1,5 +1,5 @@
-module.exports = {
-  mongoURI:
-    "mongodb+srv://fullstack_admin:VyzOxckv100APSi0@cluster.cjzt7o9.mongodb.net/?retryWrites=true&w=majority&dbName=ws",
-  jwtKEY: "du5pO2gC8xG2Uv6o",
-};
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./keys.prod.js");
+} else {
+  module.exports = require("./keys.dev.js");
+}

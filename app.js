@@ -27,7 +27,7 @@ require("./helpers/passport")(passport);
 app.use(require("morgan")("dev"));
 app.use("/uploads", express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json({limit: '8mb'}));
+app.use(bodyParser.json({ limit: "8mb" }));
 app.use(require("cors")());
 
 app.use("/api/user", userRoutes);
@@ -35,5 +35,13 @@ app.use("/api/overview", overviewRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/order", orderRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/dist/client/browser"));
+
+  app.get("*", (req, res) => {
+    res.sendFile("index.html", { root: "client/dist/client/browser" });
+  });
+}
 
 module.exports = app;
