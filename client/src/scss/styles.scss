@@ -19,5 +19,9 @@ $enable-rtl: true;
 // Prism.js
 @import "examples";
 
+// Red zoom
+@import 'ngx-red-zoom/styles/base.scss';
+@import 'ngx-red-zoom/styles/style-window.scss';
+
 // If you want to add something do it here
 @import "custom";

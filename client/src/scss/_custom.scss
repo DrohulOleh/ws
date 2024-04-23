@@ -96,3 +96,41 @@
   @include box-shadow($input-box-shadow);
   @include transition($input-transition);
 }
+
+.red-zoom--style--window {
+  @include red-zoom-style-window(
+    $overlay-color: rgba(#e50032, 0.5),
+    $frame-border-width: 0px,
+    $lens-border-width: 2px
+  );
+
+  .red-zoom__lens {
+    --window-x: calc(
+      var(--red-zoom-thumb-x, 0px) + var(--red-zoom-thumb-w, 0px) + 32px
+    );
+    --window-y: calc(
+      (var(--red-zoom-thumb-y, 0px) + (var(--red-zoom-thumb-h, 0px) / 2)) -
+        (var(--red-zoom-thumb-h, 0px) * 1.5)
+    );
+
+    left: var(--window-x, 0px);
+    top: var(--window-y, 0px);
+    //top: var(--red-zoom-thumb-y, 0px);
+    width: calc(var(--red-zoom-thumb-w, 0px) * 3);
+    height: calc(var(--red-zoom-thumb-h, 0px) * 3);
+  }
+
+  .red-zoom__lens-image {
+    --red-zoom-min-scale-factor: 2;
+    --red-zoom-max-scale-factor: 4;
+
+    min-width: calc(var(--red-zoom-thumb-w) * var(--red-zoom-min-scale-factor));
+    min-height: calc(
+      var(--red-zoom-thumb-h) * var(--red-zoom-min-scale-factor)
+    );
+    max-width: calc(var(--red-zoom-thumb-w) * var(--red-zoom-max-scale-factor));
+    max-height: calc(
+      var(--red-zoom-thumb-h) * var(--red-zoom-max-scale-factor)
+    );
+  }
+}

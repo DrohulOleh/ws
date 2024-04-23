@@ -116,6 +116,8 @@
               <img
                 [cCardImg]
                 [src]="product.imageSrc ? product.imageSrc : noImage"
+                [redZoom]="product.imageSrc ? product.imageSrc : noImage"
+                redZoomClass="red-zoom--style--window"
                 [alt]="product.name"
               />
             </c-col>
@@ -217,10 +219,12 @@
       <ng-container *ngIf="productsAll.length !== 0">
         <c-card class="mb-3 w-100" *ngFor="let product of productsAll">
           <c-row class="g-0">
-            <c-col [md]="2">
-              <img
+            <c-col [md]="2"
+              ><img
                 [cCardImg]
                 [src]="product.imageSrc ? product.imageSrc : noImage"
+                [redZoom]="product.imageSrc ? product.imageSrc : noImage"
+                redZoomClass="red-zoom--style--window"
                 [alt]="product.name"
               />
             </c-col>

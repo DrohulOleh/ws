@@ -30,6 +30,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
+import { RedZoomModule } from 'ngx-red-zoom';
 
 @Component({
   selector: 'app-product-page',
@@ -47,6 +48,7 @@ import { AuthService } from '../../shared/services/auth.service';
     SpinnerModule,
     ModalModule,
     ButtonGroupModule,
+    RedZoomModule,
   ],
   templateUrl: './product-page.component.html',
 })
