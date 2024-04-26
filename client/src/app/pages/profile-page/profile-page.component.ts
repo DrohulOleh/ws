@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import {
@@ -16,11 +15,10 @@ import {
   SpinnerModule,
 } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription, of, switchMap } from 'rxjs';
 import { IUser } from '../../shared/classes/types';
 import { IconModule } from '@coreui/icons-angular';
-import { ValidationService } from '../../shared/services/validation.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -138,8 +136,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.userProfile.password = this.formEditProfile.value.profileNewPassword;
     this.userProfile.isRegistrationComplete = true;
 
-    console.log(this.userProfile);
-
     if (this.userProfile._id) {
       this.profileSubscription = this.authService
         .updateUser(this.userProfile)
@@ -147,10 +143,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           next: (user) => {
             this.userProfile = user;
             console.log('Cahanges saved');
-            this.authService.refreshToken().subscribe(() => {
-              console.log('Token refreshed');
-            });
+            this.authService.refreshToken().subscribe(() => {});
             this.formEditProfile.enable();
+            this.router.navigate(['/product']);
           },
           error: (err) => {
             console.log(err);
