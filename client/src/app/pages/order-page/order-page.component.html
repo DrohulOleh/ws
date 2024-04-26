@@ -38,7 +38,9 @@
         Order No.{{ selectedOrder.order }} dated
         {{ selectedOrder.date | date : "dd.MM.yy" }}&nbsp;{{
           selectedOrder.date | date : "HH:mm"
-        }}&nbsp;by&nbsp;{{ currentUserIsAdmin ? selectedOrder.email : "" }}
+        }}&nbsp;{{ currentUserIsAdmin ? "by" : "" }}&nbsp;{{
+          currentUserIsAdmin ? selectedOrder.email : ""
+        }}
       </h4>
     </c-modal-header>
     <c-modal-body

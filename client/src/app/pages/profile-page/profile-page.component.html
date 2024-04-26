@@ -1,1 +1,398 @@
-<p>profile-page works!</p>
+<!-- display: block -->
+<c-modal
+  #modalEditProfile
+  id="modalEditProfile"
+  [visible]="true"
+  backdrop="static"
+  size="lg"
+>
+  <!-- display: block -->
+  <form
+    cForm
+    [formGroup]="formEditProfile"
+    (ngSubmit)="onSubmitEditProfile()"
+    novalidate
+  >
+    <!-- display: block -->
+    <c-modal-header *ngIf="userProfile.name">
+      <h4>{{ userProfile.name }}</h4>
+    </c-modal-header>
+    <!-- display: block -->
+    <c-modal-body>
+      <!-- display: block -->
+      <c-col>
+        <!-- display: block -->
+        <label>User name</label>
+        <input
+          cFormControl
+          formControlName="profileName"
+          type="text"
+          id="profileName"
+          autocomplete="off"
+          placeholder="Enter your name"
+          [valid]="
+            formEditProfile.get('profileName').touched &&
+            formEditProfile.get('profileName').valid
+              ? true
+              : formEditProfile.get('profileName').touched &&
+                formEditProfile.get('profileName').invalid
+              ? false
+              : undefined
+          "
+        /><!-- display: block -->
+        <c-form-feedback
+          class="text-end"
+          *ngIf="formEditProfile.get('profileName').invalid"
+          [valid]="!formEditProfile.get('profileName').invalid"
+        >
+          <!-- display: block -->
+          <ng-container
+            *ngIf="
+              formEditProfile.get('profileName').touched &&
+              formEditProfile.get('profileName').invalid
+            "
+          >
+            <!-- display: block -->
+            <div *ngIf="formEditProfile.get('profileName').errors['required']">
+              User name is required
+            </div>
+            <div *ngIf="formEditProfile.get('profileName').errors['pattern']">
+              The username must contain a first and last name, for example 'John
+              Doe'
+            </div>
+          </ng-container>
+        </c-form-feedback>
+        <!-- display: block -->
+        <label for="profileEmail" class="mt-3">Email</label>
+        <c-input-group>
+          <input
+            cFormControl
+            formControlName="profileEmail"
+            type="email"
+            id="profileEmail"
+            autocomplete="off"
+            placeholder="Enter your email"
+            [valid]="
+              formEditProfile.get('profileEmail').touched &&
+              formEditProfile.get('profileEmail').valid
+                ? true
+                : formEditProfile.get('profileEmail').touched &&
+                  formEditProfile.get('profileEmail').invalid
+                ? false
+                : undefined
+            "
+          /><!-- display: block -->
+          <!-- <button
+            cButton
+            [disabled]="
+              formEditProfile.get('profileEmail').invalid || !emailConfirmed
+            "
+            color="secondary"
+            type="button"
+            variant="outline"
+          >
+            Confirm email
+          </button> -->
+        </c-input-group>
+        <!-- display: block -->
+        <c-form-feedback
+          class="text-end"
+          *ngIf="formEditProfile.get('profileEmail').invalid"
+          [valid]="!formEditProfile.get('profileEmail').invalid"
+        >
+          <!-- display: block -->
+          <ng-container
+            *ngIf="
+              formEditProfile.get('profileEmail').touched &&
+              formEditProfile.get('profileEmail').invalid
+            "
+          >
+            <div *ngIf="formEditProfile.get('profileEmail').errors['required']">
+              Email is required
+            </div>
+            <div *ngIf="formEditProfile.get('profileEmail').errors['email']">
+              Enter a correct email
+            </div>
+          </ng-container>
+        </c-form-feedback>
+        <!-- display: block -->
+        <div *ngIf="!blockChangePasswordVISIBLE">
+          <!-- display: block -->
+          <button
+            cButton
+            [disabled]="formEditProfile.invalid || formEditProfile.disabled"
+            class="mt-3 justify-content-center align-items-center d-flex"
+            type="button"
+            color="danger"
+            size="sm"
+            variant="outline"
+            (click)="onChangePassword()"
+          >
+            Change password
+          </button>
+
+          <!-- display: block -->
+        </div>
+
+        <!-- display: block -->
+        <div *ngIf="blockChangePasswordVISIBLE">
+          <label for="blockChangePassword" class="mt-3">Change password</label>
+          <div class="form-control input">
+            <!-- display: block -->
+            <label class="small">New password</label>
+            <!-- display: block -->
+            <input
+              cFormControl
+              [valid]="
+                formEditProfile.get('profileNewPassword').valid &&
+                formEditProfile.get('profileNewPassword').touched
+                  ? true
+                  : formEditProfile.get('profileNewPassword').invalid &&
+                    formEditProfile.get('profileNewPassword').touched
+                  ? false
+                  : undefined
+              "
+              autocomplete="off"
+              type="password"
+              placeholder="Enter new password"
+              formControlName="profileNewPassword"
+              sizing="sm"
+            />
+            <!-- display: block -->
+            <c-form-feedback
+              class="text-end"
+              *ngIf="formEditProfile.get('profileNewPassword').invalid"
+              [valid]="!formEditProfile.get('profileNewPassword').invalid"
+            >
+              <!-- display: block -->
+              <ng-container
+                *ngIf="
+                  formEditProfile.get('profileNewPassword').invalid &&
+                  formEditProfile.get('profileNewPassword').touched
+                "
+              >
+                <!-- display: block -->
+                <div
+                  *ngIf="
+                    formEditProfile.get('profileNewPassword').errors['required']
+                  "
+                >
+                  New password is required
+                </div>
+                <!-- display: block -->
+                <div
+                  *ngIf="
+                    formEditProfile.get('profileNewPassword').errors[
+                      'minlength'
+                    ] &&
+                    formEditProfile.get('profileNewPassword').errors[
+                      'minlength'
+                    ]['requiredLength']
+                  "
+                >
+                  Password must be at least
+                  {{
+                    formEditProfile.get("profileNewPassword").errors[
+                      "minlength"
+                    ]["requiredLength"]
+                  }}
+                  characters long
+                </div>
+              </ng-container>
+            </c-form-feedback>
+            <label class="mt-2 small">Confirm new password</label>
+            <!-- display: block -->
+            <input
+              cFormControl
+              [valid]="
+                formEditProfile.get('profileNewPasswordConfirm').valid &&
+                formEditProfile.get('profileNewPasswordConfirm').touched
+                  ? true
+                  : formEditProfile.get('profileNewPasswordConfirm').invalid &&
+                    formEditProfile.get('profileNewPasswordConfirm').touched
+                  ? false
+                  : undefined
+              "
+              autocomplete="off"
+              type="password"
+              placeholder="Confirm new password"
+              formControlName="profileNewPasswordConfirm"
+              sizing="sm"
+            />
+            <!-- display: block -->
+            <c-form-feedback
+              class="text-end"
+              *ngIf="formEditProfile.get('profileNewPasswordConfirm').invalid"
+              [valid]="
+                !formEditProfile.get('profileNewPasswordConfirm').invalid
+              "
+            >
+              <!-- display: block -->
+              <ng-container
+                *ngIf="
+                  formEditProfile.get('profileNewPasswordConfirm').invalid &&
+                  formEditProfile.get('profileNewPasswordConfirm').touched
+                "
+              >
+                <!-- display: block -->
+                <div
+                  *ngIf="
+                    formEditProfile.controls.profileNewPasswordConfirm.errors
+                      .passwordMatch
+                  "
+                >
+                  Passwords must match
+                </div>
+                <!-- display: block -->
+                <div
+                  *ngIf="
+                    formEditProfile.get('profileNewPasswordConfirm').errors[
+                      'required'
+                    ]
+                  "
+                >
+                  Password confirmation is required
+                </div>
+              </ng-container>
+            </c-form-feedback>
+            <div cCol="auto" class="justify-content-end align-items-end d-flex">
+              <button
+                cButton
+                class="mt-2 justify-content-center align-items-center d-flex"
+                type="button"
+                color="secondary"
+                variant="outline"
+                size="sm"
+                (click)="onChangePasswordCancel()"
+              >
+                <svg cIcon name="cil-x-circle" size="lg" class="me-2"></svg>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- display: block -->
+        <!-- <label for="profileDeliveryAddress" class="mt-3">
+          Delivery address
+        </label>
+        
+        <div class="form-control input">
+          
+          <c-row>
+            
+            <c-col>
+              
+              <ng-container *ngIf="userProfile.deliveryAddress !== null">
+                <div *ngFor="let address of userProfile.deliveryAddress">
+                  
+                  <c-input-group sizing="sm" class="my-1">
+                    <span class="form-control input">{{ address }}</span>
+                    
+                    <button
+                      cButton
+                      (click)="onEditDeliveryAddress(address)"
+                      color="warning"
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                    >
+                      <svg cIcon name="cil-pencil" size="sm" class="me-2"></svg>
+                      Edit
+                    </button>
+                    <button
+                      cButton
+                      (click)="onDeleteDeliveryAddress(address)"
+                      color="danger"
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                    >
+                      <svg cIcon name="cil-trash" size="sm" class="me-2"></svg>
+                      Delite
+                    </button>
+                    
+                  </c-input-group>
+                </div>
+              </ng-container>
+            </c-col>
+            
+            <c-col
+              cCol="auto"
+              class="d-flex align-items-center justify-content-end"
+            >
+              <button
+                cButton
+                (click)="onAddDeliveryAddress()"
+                color="success"
+                variant="outline"
+                size="sm"
+                class="mb-3 d-flex align-items-center justify-content-center"
+              >
+                <svg cIcon name="cil-playlist-add" size="lg" class="me-2"></svg>
+                Add delivery address
+              </button>
+            </c-col>
+            
+            <ng-container *ngIf="blockGoogleMapVISIBLE">
+              
+              <c-row class="mt-2">
+                <c-col>
+                  <input
+                    cFormControl
+                    formControlName="profileDeliveryAddress"
+                    type="text"
+                    id="profileDeliveryAddress"
+                    autocomplete="off"
+                    placeholder="Enter delivery address"
+                    sizing="sm"
+                  />
+                  </c-col
+                >
+                <c-col cCol="auto">
+                  <button cButton variant="outline" size="sm" color="success">
+                    Add
+                  </button>
+                </c-col>
+                <div></div>
+              </c-row>
+            </ng-container>
+          </c-row>
+        </div>
+        <c-form-feedback class="text-end"></c-form-feedback> -->
+      </c-col>
+    </c-modal-body>
+    <!-- display: block -->
+    <c-modal-footer>
+      <button
+        cButton
+        [disabled]="formEditProfile.invalid || formEditProfile.disabled"
+        color="primary"
+        variant="outline"
+        type="submit"
+        size="sm"
+        class="mb-3 d-flex align-items-center justify-content-center"
+      >
+        <svg cIcon name="cil-save" size="lg" class="me-2"></svg>
+        Save
+      </button>
+      <button
+        (click)="onCancelEditProfile()"
+        cButton
+        color="secondary"
+        variant="outline"
+        size="sm"
+        class="mb-3 d-flex align-items-center justify-content-center"
+      >
+        <svg cIcon name="cil-x-circle" size="lg" class="me-2"></svg>
+        Cancel
+      </button>
+    </c-modal-footer>
+  </form>
+</c-modal>
+
+<ng-template #loader>
+  <div class="myspinner">
+    <c-spinner></c-spinner>
+  </div>
+</ng-template>

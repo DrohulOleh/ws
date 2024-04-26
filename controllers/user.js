@@ -62,7 +62,7 @@ module.exports.registration = async function (req, res) {
 
 module.exports.getAll = async function (req, res) {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).select("-password");
 
     res.status(200).json(users);
   } catch (err) {
@@ -72,6 +72,9 @@ module.exports.getAll = async function (req, res) {
 
 module.exports.getById = async function (req, res) {
   try {
+    const user = await User.findById(req.params.id).select("-password");
+
+    res.status(200).json(user);
   } catch (err) {
     errorHandler(res, err);
   }
@@ -79,6 +82,30 @@ module.exports.getById = async function (req, res) {
 
 module.exports.update = async function (req, res) {
   try {
+    const salt = bcrypt.genSaltSync(10);
+    let hashedPassword;
+
+    if (req.body.password) {
+      const password = req.body.password;
+      hashedPassword = bcrypt.hashSync(password, salt);
+    }
+
+    const updated = {
+      deliveryAddress: req.body.deliveryAddress,
+      email: req.body.email,
+      isRegistrationComplete: req.body.isRegistrationComplete,
+      name: req.body.name,
+      password: hashedPassword,
+      role: req.body.role,
+    };
+
+    const user = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: updated },
+      { new: true }
+    );
+
+    res.status(200).json(user);
   } catch (err) {
     errorHandler(res, err);
   }
@@ -86,6 +113,30 @@ module.exports.update = async function (req, res) {
 
 module.exports.delete = async function (req, res) {
   try {
+  } catch (err) {
+    errorHandler(res, err);
+  }
+};
+
+module.exports.refreshToken = async function (req, res) {
+  try {
+    const currentToken = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(currentToken, keys.jwtKEY);
+    const { email, userId, role, isRegistrationComplete } = decoded;
+    const user = await User.findById(userId);
+
+    const newToken = jwt.sign(
+      {
+        email: user.email,
+        userId: user._id,
+        role: user.role,
+        isRegistrationComplete: user.isRegistrationComplete,
+      },
+      keys.jwtKEY,
+      { expiresIn: 3600 * 24 }
+    );
+
+    res.status(200).json({ token: `Bearer ${newToken}` });
   } catch (err) {
     errorHandler(res, err);
   }

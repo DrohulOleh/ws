@@ -36,6 +36,7 @@ import { RedZoomModule } from 'ngx-red-zoom';
   selector: 'app-product-page',
   standalone: true,
   imports: [
+    ButtonGroupModule,
     ButtonModule,
     CardModule,
     CommonModule,
@@ -43,12 +44,11 @@ import { RedZoomModule } from 'ngx-red-zoom';
     FormsModule,
     GridModule,
     IconModule,
+    ModalModule,
     ReactiveFormsModule,
+    RedZoomModule,
     RouterLink,
     SpinnerModule,
-    ModalModule,
-    ButtonGroupModule,
-    RedZoomModule,
   ],
   templateUrl: './product-page.component.html',
 })

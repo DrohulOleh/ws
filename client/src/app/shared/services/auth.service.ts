@@ -29,12 +29,29 @@ export class AuthService {
     return this.http.get<IUser[]>('/api/user');
   }
 
+  getUserById(id: string): Observable<IUser> {
+    return this.http.get<IUser>(`/api/user/${id}`);
+  }
+
+  updateUser(user: IUser): Observable<IUser> {
+    return this.http.patch<IUser>(`api/user/${user._id}`, user);
+  }
+
   setToken(token: string) {
     this.token = token;
   }
 
   getToken(): string {
     return this.token;
+  }
+
+  refreshToken(): Observable<{ token: string }> {
+    return this.http.get<{ token: string }>('/api/user/refresh-token').pipe(
+      tap(({ token }) => {
+        localStorage.setItem('auth-token', token);
+        this.setToken(token);
+      })
+    );
   }
 
   isAuthenticated(): boolean {

@@ -26,8 +26,10 @@ export interface IMessage {
 
 export interface IUser {
   _id: string | undefined;
+  deliveryAddress?: string[];
   email: string;
   isRegistrationComplete: boolean;
+  name?: string;
   password: string;
   role: EUserRoles;
 }

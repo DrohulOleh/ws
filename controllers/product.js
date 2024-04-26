@@ -39,7 +39,14 @@ module.exports.create = async function (req, res) {
 };
 
 module.exports.update = async function (req, res) {
-  const updated = { name: req.body.name };
+  const updated = {
+    category: req.body.category,
+    cost: req.body.cost,
+    description: req.body.description,
+    imageSrc: req.file ? req.file.path : "",
+    name: req.body.name,
+    unit: req.body.unit,
+  };
 
   if (req.file) {
     updated.imageSrc = req.file.path;
