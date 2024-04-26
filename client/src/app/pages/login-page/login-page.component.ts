@@ -82,8 +82,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
           ) {
             this.router.navigate(['/product']);
           } else {
-            this.router.navigate(['/product']);
-            //this.router.navigate([`/profile/${this.authService.getUserPayload()?.userId}`,]);
+            this.router.navigate([
+              `/profile/${this.authService.getUserPayload()?.userId}`,
+            ]);
           }
         }
       },
