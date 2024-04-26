@@ -1,4 +1,4 @@
-<table cTable hover *ngIf="orders.length !== 0; else loader">
+<table cTable hover *ngIf="orders.length !== 0; else empty">
   <thead>
     <tr>
       <th scope="col" *ngIf="currentUserIsAdmin">User</th>
@@ -72,7 +72,19 @@
         </h5>
       </div></c-modal-body
     >
+    <!-- display: block -->
     <c-modal-footer>
+      <button
+        cButton
+        [disabled]="true"
+        (click)="printOrder(selectedOrder)"
+        color="info"
+        variant="outline"
+        size="sm"
+        class="mb-3 d-flex align-items-center justify-content-center"
+      >
+        <svg cIcon name="cil-print" size="lg" class="me-2"></svg>Print
+      </button>
       <button
         (click)="toggleModal()"
         cButton
@@ -93,3 +105,5 @@
     <c-spinner></c-spinner>
   </div>
 </ng-template>
+
+<ng-template #empty><h4>No orders yet</h4></ng-template>

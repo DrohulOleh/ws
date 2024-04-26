@@ -10,7 +10,6 @@ import { OrderService } from '../../shared/services/order.service';
 import { Subscription } from 'rxjs';
 import {
   ButtonModule,
-  ModalComponent,
   ModalModule,
   SpinnerModule,
   TableModule,
@@ -42,7 +41,7 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
   currentUserIsAdmin =
     this.authService.getUserPayload()?.role === EUserRoles.admin ? true : false;
   selectedOrder!: IOrder;
-  // modalOrder!: ModalComponent;
+
   modalVisible = false;
 
   orderSubscription!: Subscription;
@@ -98,4 +97,6 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
       return order;
     });
   }
+
+  printOrder(order: IOrder) {}
 }

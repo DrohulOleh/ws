@@ -16,7 +16,10 @@ import { Subscription } from 'rxjs';
   templateUrl: './cart-page.component.html',
 })
 export class CartPageComponent implements OnInit, OnDestroy {
-  currentUserId = this.auth.getUserPayload()?.userId;
+  currentUserId = this.authService.getUserPayload()?.userId;
+  isRegistrationComplete: boolean =
+    this.authService.getUserPayload()?.isRegistrationComplete;
+
   productInCart: IProductList[] = [];
   totalAmmount = '';
   fetchingProducts = false;
@@ -29,7 +32,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private router: Router,
     private orderService: OrderService,
-    private auth: AuthService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {

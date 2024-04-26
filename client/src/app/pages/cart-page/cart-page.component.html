@@ -45,11 +45,14 @@
       cButton
       class="mt-3 justify-content-center align-items-center d-flex"
       color="success"
-      [disabled]="pendingOrder"
+      [disabled]="pendingOrder || !isRegistrationComplete"
       (click)="orderProduct()"
     >
       Complete order
     </button>
+    <div *ngIf="!isRegistrationComplete" class="mt-2">
+      To complete your order you need to fill in your profile information
+    </div>
   </div>
 </ng-container>
 
