@@ -65,7 +65,7 @@ export interface IOrder {
   list?: IProductList[];
   order?: number;
   user?: string;
-  email?: string;
+  name?: string;
 }
 
 export interface IProductList {

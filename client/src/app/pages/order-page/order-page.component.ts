@@ -65,8 +65,6 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.orders = this.addEmailsToOrders(orders);
       },
     });
-
-   // console.log(this.currentUserIsAdmin);
   }
 
   ngAfterViewInit(): void {}
@@ -95,7 +93,7 @@ export class OrderPageComponent implements OnInit, AfterViewInit, OnDestroy {
     return orders.map((order) => {
       const user = this.users.find((user) => user._id === order.user);
       if (user) {
-        return { ...order, email: user.email }; // Создаем новый объект с добавленным email
+        return { ...order, name: user.name }; // Создаем новый объект с добавленным email
       }
       return order;
     });

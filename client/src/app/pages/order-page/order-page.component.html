@@ -9,7 +9,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let order of orders">
-      <td *ngIf="currentUserIsAdmin">{{ order.email }}</td>
+      <td *ngIf="currentUserIsAdmin">{{ order.name }}</td>
       <td>
         {{ order.date | date : "d MMM yyyy" }}&nbsp;{{
           order.date | date : "HH:mm"
@@ -39,7 +39,7 @@
         {{ selectedOrder.date | date : "dd.MM.yy" }}&nbsp;{{
           selectedOrder.date | date : "HH:mm"
         }}&nbsp;{{ currentUserIsAdmin ? "by" : "" }}&nbsp;{{
-          currentUserIsAdmin ? selectedOrder.email : ""
+          currentUserIsAdmin ? selectedOrder.name : ""
         }}
       </h4>
     </c-modal-header>
