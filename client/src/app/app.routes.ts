@@ -11,7 +11,7 @@ import { OrderPageComponent } from './pages/order-page/order-page.component';
 import { OverviewPageComponent } from './pages/overview-page/overview-page.component';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
-import { UserPageComponent } from './pages/user-page/user-page.component';
+import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 
 export const routes: Routes = [
@@ -33,7 +33,7 @@ export const routes: Routes = [
       { path: 'product', component: ProductPageComponent },
       { path: 'order', component: OrderPageComponent },
       { path: 'cart', component: CartPageComponent },
-      { path: 'user', component: UserPageComponent },
+      { path: 'users', component: UsersPageComponent },
       // { path: 'profile/:id', component: ProfilePageComponent },
     ],
   },

@@ -1,0 +1,32 @@
+<table cTable hover *ngIf="usersWithOrders.length !== 0; else loader">
+  <thead>
+    <tr>
+      <th scope="col">User name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Orders</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of usersWithOrders">
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <div *ngIf="user.totalOrders !== 0">{{ user.totalOrders }}</div>
+      </td>
+      <td>
+        <div *ngIf="user.totalAmount !== 0">
+          {{ user.totalAmount | currency : "EUR" }}
+        </div>
+      </td>
+      <td>{{ user.role }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #loader>
+  <div class="myspinner">
+    <c-spinner></c-spinner>
+  </div>
+</ng-template>
