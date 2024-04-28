@@ -1,4 +1,4 @@
-<table cTable hover *ngIf="orders.length !== 0; else empty">
+<table cTable hover *ngIf="orders.length !== 0; else loader">
   <thead>
     <tr>
       <th scope="col" *ngIf="currentUserIsAdmin">User</th>
