@@ -8,7 +8,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
   private token: null | any;
-  currentUserRole = this.getUserPayload()?.role;
+  public currentUserRole = this.getUserPayload()?.role;
 
   constructor(private http: HttpClient) {}
 

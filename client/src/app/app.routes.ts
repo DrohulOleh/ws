@@ -13,6 +13,7 @@ import { ProductPageComponent } from './pages/product-page/product-page.componen
 import { RegistrationPageComponent } from './pages/registration-page/registration-page.component';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { EUserRoles } from './shared/classes/types';
 
 export const routes: Routes = [
   {
@@ -29,12 +30,19 @@ export const routes: Routes = [
     component: SiteLayoutComponent,
     canActivate: [canActivate, canActivateChild],
     children: [
-      { path: 'overview', component: OverviewPageComponent },
+      {
+        path: 'overview',
+        component: OverviewPageComponent,
+        data: { role: [EUserRoles.admin] },
+      },
       { path: 'product', component: ProductPageComponent },
       { path: 'order', component: OrderPageComponent },
       { path: 'cart', component: CartPageComponent },
-      { path: 'users', component: UsersPageComponent },
-      // { path: 'profile/:id', component: ProfilePageComponent },
+      {
+        path: 'users',
+        component: UsersPageComponent,
+        data: { role: [EUserRoles.admin] },
+      },
     ],
   },
   {
