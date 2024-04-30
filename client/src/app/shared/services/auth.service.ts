@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EUserRoles, IUser } from '../classes/types';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private token: null | any;
-  //currentUserRole = this.getUserPayload()?.role;
 
   constructor(private http: HttpClient) {}
 
@@ -73,16 +72,19 @@ export class AuthService {
     }
   }
 
-  getUserRole():Observable<string[]> {
-    const currentUserRole = this.getUserPayload()?.role;
-    return currentUserRole
+  getUserRole(): EUserRoles | null {
+    const currentUserRole: EUserRoles | null = this.getUserPayload()?.role;
+    return currentUserRole;
   }
 
-  /* isAdmin(): boolean {
-    if (this.currentUserRole === EUserRoles.admin) {
-      return true;
+  hasPermission(expectedRoles: EUserRoles[]): Observable<boolean> {
+    const currentUserRole = this.getUserRole();
+
+    if (!currentUserRole) {
+      return of(false);
     } else {
-      return false;
-    }
-  } */
+      const hasPermission = expectedRoles.includes(currentUserRole);
+      return of(hasPermission);
+      }
+  }
 }

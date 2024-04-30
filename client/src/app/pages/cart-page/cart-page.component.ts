@@ -49,6 +49,7 @@ export class CartPageComponent implements OnInit, OnDestroy {
 
   delteProduct(product: IProductList) {
     this.cartService.deleteItemFromCart(product, this.currentUserId);
+    this.totalAmmount = this.cartService.totalAmmount;
   }
 
   plusQty(product: IProductList) {

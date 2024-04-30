@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
-import { canActivate, canActivateChild } from './shared/classes/auth.guard';
+import {
+  canActivate,
+  canActivateChild,
+  hasPermission,
+} from './shared/classes/auth.guard';
 
 import { AuthLayoutComponent } from './containers/auth-layout/auth-layout.component';
 import { SiteLayoutComponent } from './containers/site-layout/site-layout.component';
@@ -33,6 +37,7 @@ export const routes: Routes = [
       {
         path: 'overview',
         component: OverviewPageComponent,
+        canActivate: [hasPermission],
         data: { role: [EUserRoles.admin] },
       },
       { path: 'product', component: ProductPageComponent },
@@ -40,6 +45,7 @@ export const routes: Routes = [
       { path: 'cart', component: CartPageComponent },
       {
         path: 'users',
+        canActivate: [hasPermission],
         component: UsersPageComponent,
         data: { role: [EUserRoles.admin] },
       },
