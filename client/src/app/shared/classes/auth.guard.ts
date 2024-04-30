@@ -31,7 +31,7 @@ export const canActivateChild: CanActivateChildFn = (
   return canActivate(route, state);
 };
 
-export const hasPermission: CanActivateChildFn = (
+export const hasPermission: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {

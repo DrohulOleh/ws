@@ -107,7 +107,6 @@ export class UsersPageComponent implements OnInit, OnDestroy {
       (user) => user._id === userId
     );
     if (this.selectedUser) {
-      //console.log(this.selectedUser);
       this.toggleModalDetailedView();
     }
   }
@@ -122,20 +121,17 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   }
 
   onCheckRole(value: any) {
-    console.log(value);
     this.selectedRole = value;
     return value;
   }
 
   onSubmitChangeRole(userId: string) {
-    console.log(userId, this.selectedRole);
-
     this.userSubscription = this.authService.getUserById(userId).subscribe({
       next: (user) => {
         if (user) {
-          console.log(this.selectedRole);
           user.role = this.selectedRole ? this.selectedRole : user.role;
           this.authService.updateUser(user).subscribe();
+          this.authService.refreshToken().subscribe();
           this.ngOnInit();
           this.toggleModalChangeRole();
           this.toggleModalDetailedView();
