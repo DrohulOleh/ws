@@ -8,7 +8,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
   private token: null | any;
-  public currentUserRole = this.getUserPayload()?.role;
+  //currentUserRole = this.getUserPayload()?.role;
 
   constructor(private http: HttpClient) {}
 
@@ -73,11 +73,16 @@ export class AuthService {
     }
   }
 
-  isAdmin(): boolean {
+  getUserRole():Observable<string[]> {
+    const currentUserRole = this.getUserPayload()?.role;
+    return currentUserRole
+  }
+
+  /* isAdmin(): boolean {
     if (this.currentUserRole === EUserRoles.admin) {
       return true;
     } else {
       return false;
     }
-  }
+  } */
 }
